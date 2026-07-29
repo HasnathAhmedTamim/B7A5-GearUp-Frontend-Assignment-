@@ -5,6 +5,7 @@ import FeaturedGear from "@/components/home/FeaturedGear";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Footer from "@/components/layout/Footer";
 import Testimonials from "@/components/home/Testimonials";
+import CallToAction from "@/components/home/CallToAction";
 export default function HomePage() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function HomePage() {
         <FeaturedGear />
         <WhyChooseUs />
         <Testimonials />
+        <CallToAction />
       </main>
 
       <Footer />
