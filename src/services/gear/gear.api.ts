@@ -9,3 +9,8 @@ export const getAllGear = async () => {
   const { data } = await api.get("/gear");
   return data.data;
 };
+
+export const getSingleGear = async (id: string) => {
+  const { data } = await api.get(`/gear/${id}`);
+  return data.data;
+};

@@ -1,0 +1,31 @@
+import { api } from "@/lib/axios";
+import { User } from "@/types/auth";
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+export const loginUser = async (payload: LoginPayload) => {
+  const { data } = await api.post<ApiResponse<User>>("/auth/login", payload);
+
+  return data;
+};
+
+export const getCurrentUser = async () => {
+  const { data } = await api.get<ApiResponse<User>>("/auth/me");
+
+  return data;
+};
+
+export const logoutUser = async () => {
+  const { data } = await api.post<ApiResponse<null>>("/auth/logout");
+
+  return data;
+};

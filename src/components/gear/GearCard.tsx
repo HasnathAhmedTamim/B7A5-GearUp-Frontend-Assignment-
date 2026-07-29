@@ -41,7 +41,7 @@ export default function GearCard({ gear }: GearCardProps) {
 
                 <Link
                     href={`/gear/${gear.id}`}
-                    className="block rounded-lg bg-blue-600 py-2 text-center font-medium text-white transition hover:bg-blue-700"
+                    className="mt-5 block rounded-lg bg-blue-600 py-2 text-center text-white hover:bg-blue-700"
                 >
                     View Details
                 </Link>
