@@ -6,6 +6,12 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
 interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -14,6 +20,15 @@ interface ApiResponse<T> {
 
 export const loginUser = async (payload: LoginPayload) => {
   const { data } = await api.post<ApiResponse<User>>("/auth/login", payload);
+
+  return data;
+};
+
+export const registerUser = async (payload: RegisterPayload) => {
+  const { data } = await api.post<ApiResponse<User>>(
+    "/users/register",
+    payload
+  );
 
   return data;
 };
