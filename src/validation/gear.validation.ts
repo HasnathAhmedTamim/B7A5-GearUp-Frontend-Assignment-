@@ -23,3 +23,4 @@ export const addGearSchema = z.object({
 });
 
 export type AddGearFormData = z.infer<typeof addGearSchema>;
+export type UpdateGearFormData = Partial<AddGearFormData>;
