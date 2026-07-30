@@ -1,4 +1,5 @@
 import { api } from "@/lib/axios";
+import { ICreateGear } from "@/types/gear";
 
 export const getFeaturedGear = async () => {
   const { data } = await api.get("/gear?limit=6");
@@ -11,43 +12,23 @@ export const getAllGear = async (params?: Record<string, unknown>) => {
 
   return data;
 };
+
 export const getSingleGear = async (id: string) => {
   const { data } = await api.get(`/gear/${id}`);
   return data.data;
 };
 
-/* ---------------- Provider ---------------- */
-
 export const getMyGear = async () => {
   const { data } = await api.get("/gear/provider/my-gear");
-  return data;
+  return data.data;
 };
 
-export const createGear = async (payload: {
-  title: string;
-  description: string;
-  brand: string;
-  image: string;
-  pricePerDay: number;
-  stock: number;
-  categoryId: string;
-}) => {
+export const createGear = async (payload: ICreateGear) => {
   const { data } = await api.post("/gear", payload);
   return data;
 };
 
-export const updateGear = async (
-  id: string,
-  payload: Partial<{
-    title: string;
-    description: string;
-    brand: string;
-    image: string;
-    pricePerDay: number;
-    stock: number;
-    categoryId: string;
-  }>
-) => {
+export const updateGear = async (id: string, payload: Partial<ICreateGear>) => {
   const { data } = await api.patch(`/gear/${id}`, payload);
   return data;
 };

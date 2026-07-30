@@ -1,31 +1,34 @@
-export interface Category {
-  id: string;
-  name: string;
-  description: string | null;
-}
+import { ICategory } from "./category";
 
-export interface Provider {
+export interface IGear {
   id: string;
-  name: string;
-  email: string;
-}
 
-export interface Gear {
-  id: string;
   title: string;
   description: string;
   brand: string;
   image: string;
-  pricePerDay: string;
+
+  pricePerDay: number;
   stock: number;
   availability: boolean;
 
   categoryId: string;
   providerId: string;
 
-  category: Category;
-  provider: Provider;
+  category: ICategory;
 
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ICreateGear {
+  title: string;
+  description: string;
+  brand: string;
+  image: string;
+
+  pricePerDay: number;
+  stock: number;
+
+  categoryId: string;
 }

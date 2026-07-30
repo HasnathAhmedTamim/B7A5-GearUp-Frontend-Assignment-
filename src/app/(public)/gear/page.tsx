@@ -8,11 +8,11 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
 import { getAllGear } from "@/services/gear/gear.api";
-import { Gear } from "@/types/gear";
+import { IGear } from "@/types/gear";
 
 export default function GearPage() {
     const {
-        data: gears = [],
+        data,
         isLoading,
         isError,
         error,
@@ -21,6 +21,8 @@ export default function GearPage() {
         queryFn: getAllGear,
     });
 
+    const gears: IGear[] = data?.data ?? [];
+
     if (isLoading) {
         return (
             <>
@@ -28,7 +30,9 @@ export default function GearPage() {
 
                 <Container>
                     <div className="flex min-h-[60vh] items-center justify-center">
-                        <p className="text-lg font-medium">Loading gear...</p>
+                        <p className="text-lg font-medium">
+                            Loading gear...
+                        </p>
                     </div>
                 </Container>
 
@@ -45,7 +49,8 @@ export default function GearPage() {
                 <Container>
                     <div className="flex min-h-[60vh] items-center justify-center">
                         <p className="text-red-500">
-                            {(error as Error).message || "Failed to load gear."}
+                            {(error as Error).message ||
+                                "Failed to load gear."}
                         </p>
                     </div>
                 </Container>
@@ -62,7 +67,9 @@ export default function GearPage() {
             <main className="py-16">
                 <Container>
                     <div className="mb-10 text-center">
-                        <h1 className="text-4xl font-bold">All Sports Gear</h1>
+                        <h1 className="text-4xl font-bold">
+                            All Sports Gear
+                        </h1>
 
                         <p className="mt-3 text-gray-500">
                             Browse all available sports equipment for rent.
@@ -77,7 +84,7 @@ export default function GearPage() {
                         </div>
                     ) : (
                         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {gears.map((gear: Gear) => (
+                            {gears.map((gear) => (
                                 <GearCard
                                     key={gear.id}
                                     gear={gear}
