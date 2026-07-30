@@ -6,26 +6,34 @@ import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/layout/Container";
+import RentalForm from "@/components/forms/RentalForm";
 
 import { getSingleGear } from "@/services/gear/gear.api";
 
 export default function GearDetailsPage() {
     const params = useParams();
 
-    const { data: gear, isLoading, isError } = useQuery({
+    const {
+        data: gear,
+        isLoading,
+        isError,
+    } = useQuery({
         queryKey: ["gear", params.id],
         queryFn: () => getSingleGear(params.id as string),
+        enabled: !!params.id,
     });
 
     if (isLoading) {
         return (
             <>
                 <Navbar />
+
                 <Container>
                     <div className="flex h-[60vh] items-center justify-center">
                         Loading...
                     </div>
                 </Container>
+
                 <Footer />
             </>
         );
@@ -35,11 +43,13 @@ export default function GearDetailsPage() {
         return (
             <>
                 <Navbar />
+
                 <Container>
                     <div className="flex h-[60vh] items-center justify-center">
                         Gear not found.
                     </div>
                 </Container>
+
                 <Footer />
             </>
         );
@@ -51,15 +61,19 @@ export default function GearDetailsPage() {
 
             <main className="py-16">
                 <Container>
-                    <div className="grid gap-10 lg:grid-cols-2">
-                        <img
-                            src={gear.image}
-                            alt={gear.title}
-                            className="h-[500px] w-full rounded-xl object-cover"
-                        />
-
+                    <div className="grid gap-12 lg:grid-cols-2">
+                        {/* Image */}
                         <div>
-                            <span className="rounded bg-blue-100 px-3 py-1 text-sm text-blue-600">
+                            <img
+                                src={gear.image}
+                                alt={gear.title}
+                                className="h-[500px] w-full rounded-xl border object-cover"
+                            />
+                        </div>
+
+                        {/* Details */}
+                        <div>
+                            <span className="rounded bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
                                 {gear.category.name}
                             </span>
 
@@ -67,53 +81,78 @@ export default function GearDetailsPage() {
                                 {gear.title}
                             </h1>
 
-                            <p className="mt-3 text-gray-500">
+                            <p className="mt-4 text-gray-600">
                                 {gear.description}
                             </p>
 
-                            <div className="mt-8 space-y-3">
-                                <p>
-                                    <strong>Brand:</strong> {gear.brand}
-                                </p>
+                            <div className="mt-8 space-y-4 rounded-xl border bg-gray-50 p-6">
+                                <div className="flex justify-between">
+                                    <span className="font-medium">Brand</span>
+                                    <span>{gear.brand}</span>
+                                </div>
 
-                                <p>
-                                    <strong>Price:</strong> ৳{gear.pricePerDay} / day
-                                </p>
+                                <div className="flex justify-between">
+                                    <span className="font-medium">
+                                        Price / Day
+                                    </span>
 
-                                <p>
-                                    <strong>Stock:</strong> {gear.stock}
-                                </p>
+                                    <span className="font-semibold text-blue-600">
+                                        ৳ {gear.pricePerDay}
+                                    </span>
+                                </div>
 
-                                <p>
-                                    <strong>Availability:</strong>{" "}
+                                <div className="flex justify-between">
+                                    <span className="font-medium">
+                                        Available Stock
+                                    </span>
+
+                                    <span>{gear.stock}</span>
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <span className="font-medium">
+                                        Availability
+                                    </span>
+
                                     <span
                                         className={
                                             gear.availability
-                                                ? "text-green-600"
-                                                : "text-red-600"
+                                                ? "font-semibold text-green-600"
+                                                : "font-semibold text-red-600"
                                         }
                                     >
                                         {gear.availability
                                             ? "Available"
                                             : "Unavailable"}
                                     </span>
-                                </p>
+                                </div>
 
-                                <p>
-                                    <strong>Provider:</strong> {gear.provider.name}
-                                </p>
+                                <div className="flex justify-between">
+                                    <span className="font-medium">
+                                        Provider
+                                    </span>
 
-                                <p>
-                                    <strong>Email:</strong> {gear.provider.email}
-                                </p>
+                                    <span>{gear.provider.name}</span>
+                                </div>
+
+                                <div className="flex justify-between">
+                                    <span className="font-medium">
+                                        Email
+                                    </span>
+
+                                    <span>{gear.provider.email}</span>
+                                </div>
                             </div>
-
-                            <button
-                                className="mt-10 w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
-                            >
-                                Rent Now
-                            </button>
                         </div>
+                    </div>
+
+                    {/* Rental Form */}
+                    <div className="mt-16">
+                        <RentalForm
+                            gearId={gear.id}
+                            pricePerDay={Number(gear.pricePerDay)}
+                            stock={gear.stock}
+                        />
                     </div>
                 </Container>
             </main>
