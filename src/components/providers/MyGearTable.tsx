@@ -1,11 +1,31 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Pencil, Trash2 } from "lucide-react";
-import { toast } from "sonner";
 import Link from "next/link";
-import { deleteGear, getMyGear } from "@/services/gear/gear.api";
+import { Pencil, Trash2 } from "lucide-react";
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+
+import {
+    deleteGear,
+    getMyGear,
+} from "@/services/gear/gear.api";
 import { IGear } from "@/types/gear";
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function MyGearTable() {
     const queryClient = useQueryClient();
@@ -32,22 +52,23 @@ export default function MyGearTable() {
 
         onError: (error: any) => {
             toast.error(
-                error?.response?.data?.message || "Failed to delete gear."
+                error?.response?.data?.message ||
+                "Failed to delete gear."
             );
         },
     });
 
     if (isLoading) {
         return (
-            <div className="rounded-xl border bg-white p-6 text-center">
-                Loading...
+            <div className="rounded-xl border bg-white p-8 text-center">
+                Loading gears...
             </div>
         );
     }
 
     if (isError) {
         return (
-            <div className="rounded-xl border bg-white p-6 text-center text-red-500">
+            <div className="rounded-xl border bg-white p-8 text-center text-red-500">
                 Failed to load gears.
             </div>
         );
@@ -56,30 +77,30 @@ export default function MyGearTable() {
     if (gears.length === 0) {
         return (
             <div className="rounded-xl border bg-white p-10 text-center">
-                <h2 className="text-xl font-semibold">
+                <h2 className="text-2xl font-semibold">
                     No Gear Found
                 </h2>
 
                 <p className="mt-2 text-gray-500">
-                    Add your first gear.
+                    Add your first gear to get started.
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="overflow-x-auto rounded-xl border bg-white shadow">
+        <div className="overflow-hidden rounded-xl border bg-white shadow">
             <table className="min-w-full">
                 <thead className="bg-gray-100">
                     <tr>
-                        <th className="px-5 py-3 text-left">Image</th>
-                        <th className="px-5 py-3 text-left">Title</th>
-                        <th className="px-5 py-3 text-left">Brand</th>
-                        <th className="px-5 py-3 text-left">Category</th>
-                        <th className="px-5 py-3 text-left">Price</th>
-                        <th className="px-5 py-3 text-left">Stock</th>
-                        <th className="px-5 py-3 text-left">Status</th>
-                        <th className="px-5 py-3 text-center">Actions</th>
+                        <th className="px-5 py-4 text-left">Image</th>
+                        <th className="px-5 py-4 text-left">Title</th>
+                        <th className="px-5 py-4 text-left">Brand</th>
+                        <th className="px-5 py-4 text-left">Category</th>
+                        <th className="px-5 py-4 text-left">Price</th>
+                        <th className="px-5 py-4 text-left">Stock</th>
+                        <th className="px-5 py-4 text-left">Status</th>
+                        <th className="px-5 py-4 text-center">Actions</th>
                     </tr>
                 </thead>
 
@@ -87,13 +108,13 @@ export default function MyGearTable() {
                     {gears.map((gear: IGear) => (
                         <tr
                             key={gear.id}
-                            className="border-t"
+                            className="border-t transition hover:bg-gray-50"
                         >
                             <td className="px-5 py-4">
                                 <img
                                     src={gear.image}
                                     alt={gear.title}
-                                    className="h-14 w-14 rounded object-cover"
+                                    className="h-14 w-14 rounded-lg object-cover border"
                                 />
                             </td>
 
@@ -124,26 +145,59 @@ export default function MyGearTable() {
                                             : "bg-red-100 text-red-700"
                                         }`}
                                 >
-                                    {gear.availability ? "Available" : "Unavailable"}
+                                    {gear.availability
+                                        ? "Available"
+                                        : "Unavailable"}
                                 </span>
                             </td>
 
                             <td className="px-5 py-4">
-                                <div className="flex justify-center gap-3">
+                                <div className="flex justify-center gap-2">
                                     <Link
                                         href={`/dashboard/provider/my-gear/edit/${gear.id}`}
-                                        className="rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
+                                        className="rounded-lg bg-blue-500 p-2 text-white transition hover:bg-blue-600"
                                     >
                                         <Pencil size={18} />
                                     </Link>
 
-                                    <button
-                                        disabled={isPending}
-                                        onClick={() => removeGear(gear.id)}
-                                        className="rounded bg-red-500 p-2 text-white hover:bg-red-600 disabled:opacity-50"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <button className="rounded-lg bg-red-500 p-2 text-white transition hover:bg-red-600">
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </AlertDialogTrigger>
+
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>
+                                                    Delete Gear?
+                                                </AlertDialogTitle>
+
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone.
+                                                    This gear will be permanently
+                                                    removed from your account.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>
+                                                    Cancel
+                                                </AlertDialogCancel>
+
+                                                <AlertDialogAction
+                                                    disabled={isPending}
+                                                    onClick={() =>
+                                                        removeGear(gear.id)
+                                                    }
+                                                >
+                                                    {isPending
+                                                        ? "Deleting..."
+                                                        : "Delete"}
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </div>
                             </td>
                         </tr>
