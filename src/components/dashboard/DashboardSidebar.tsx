@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Package, PlusCircle, CalendarDays, Users, BarChart3, User, LogOut } from "lucide-react";
+import {
+    LayoutDashboard,
+    Package,
+    PlusCircle,
+    CalendarDays,
+    Users,
+    User,
+    LogOut,
+} from "lucide-react";
 
 import { useAuthContext } from "@/providers/AuthProvider";
 
@@ -72,7 +80,7 @@ export default function DashboardSidebar() {
         ADMIN: [
             {
                 title: "Dashboard",
-                href: "/dashboard",
+                href: "/dashboard", 
                 icon: LayoutDashboard,
             },
             {
@@ -95,11 +103,6 @@ export default function DashboardSidebar() {
                 href: "/dashboard/admin/categories",
                 icon: Package,
             },
-            {
-                title: "Statistics",
-                href: "/dashboard/admin/stats",
-                icon: BarChart3,
-            },
         ],
     };
 
@@ -108,18 +111,22 @@ export default function DashboardSidebar() {
 
     return (
         <aside className="flex min-h-screen w-64 flex-col border-r bg-white">
+            {/* Logo & User */}
             <div className="border-b p-6">
                 <h2 className="text-2xl font-bold text-blue-600">
                     GearUp
                 </h2>
 
-                <p className="mt-3 font-medium">{user?.name}</p>
+                <p className="mt-3 font-medium">
+                    {user?.name}
+                </p>
 
                 <span className="inline-block rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
                     {user?.role}
                 </span>
             </div>
 
+            {/* Navigation */}
             <nav className="flex-1 space-y-2 p-4">
                 {sidebarMenus.map((menu) => {
                     const Icon = menu.icon;
@@ -144,6 +151,7 @@ export default function DashboardSidebar() {
                 })}
             </nav>
 
+            {/* Logout */}
             <div className="border-t p-4">
                 <button
                     onClick={handleLogout}
