@@ -1,9 +1,22 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { getProviderOrders } from "@/services/rental/rental.api";
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+
+import {
+    getProviderOrders,
+    updateRentalStatus,
+} from "@/services/rental/rental.api";
+
+type RentalStatus = "CONFIRMED" | "PICKED_UP" | "RETURNED";
 
 export default function ProviderOrders() {
+    const queryClient = useQueryClient();
+
     const {
         data: orders,
         isLoading,
@@ -11,6 +24,31 @@ export default function ProviderOrders() {
     } = useQuery({
         queryKey: ["provider-orders"],
         queryFn: getProviderOrders,
+    });
+
+    const { mutate, isPending } = useMutation({
+        mutationFn: ({
+            id,
+            status,
+        }: {
+            id: string;
+            status: RentalStatus;
+        }) => updateRentalStatus(id, status),
+
+        onSuccess: (res) => {
+            toast.success(res.message);
+
+            queryClient.invalidateQueries({
+                queryKey: ["provider-orders"],
+            });
+        },
+
+        onError: (error: any) => {
+            toast.error(
+                error?.response?.data?.message ||
+                "Failed to update rental status."
+            );
+        },
     });
 
     if (isLoading) {
@@ -138,19 +176,68 @@ export default function ProviderOrders() {
 
                                     <td className="px-6 py-4 text-center">
                                         {order.payment ? (
-                                            <span className="text-green-600">
+                                            <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
                                                 Paid
                                             </span>
                                         ) : (
-                                            <span className="text-red-600">
+                                            <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
                                                 Unpaid
                                             </span>
                                         )}
                                     </td>
 
                                     <td className="px-6 py-4 text-center">
-                                        {/* পরের ধাপে এখানে Status Update Button থাকবে */}
-                                        -
+                                        {order.status === "PLACED" && (
+                                            <button
+                                                disabled={isPending}
+                                                onClick={() =>
+                                                    mutate({
+                                                        id: order.id,
+                                                        status: "CONFIRMED",
+                                                    })
+                                                }
+                                                className="rounded-lg bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700 disabled:opacity-50"
+                                            >
+                                                Confirm
+                                            </button>
+                                        )}
+
+                                        {order.status === "PAID" && (
+                                            <button
+                                                disabled={isPending}
+                                                onClick={() =>
+                                                    mutate({
+                                                        id: order.id,
+                                                        status: "PICKED_UP",
+                                                    })
+                                                }
+                                                className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                                            >
+                                                Pick Up
+                                            </button>
+                                        )}
+
+                                        {order.status === "PICKED_UP" && (
+                                            <button
+                                                disabled={isPending}
+                                                onClick={() =>
+                                                    mutate({
+                                                        id: order.id,
+                                                        status: "RETURNED",
+                                                    })
+                                                }
+                                                className="rounded-lg bg-purple-600 px-4 py-2 text-sm text-white hover:bg-purple-700 disabled:opacity-50"
+                                            >
+                                                Returned
+                                            </button>
+                                        )}
+
+                                        {(order.status === "CONFIRMED" ||
+                                            order.status === "RETURNED") && (
+                                                <span className="text-sm text-gray-500">
+                                                    No Action
+                                                </span>
+                                            )}
                                     </td>
                                 </tr>
                             ))}
