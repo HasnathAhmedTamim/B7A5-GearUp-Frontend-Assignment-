@@ -1,7 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+
 import { getMyRentals } from "@/services/rental/rental.api";
+import PaymentButton from "@/components/dashboard/customer/PaymentButton";
 
 export default function MyRentals() {
     const {
@@ -129,21 +131,24 @@ export default function MyRentals() {
                                     </td>
 
                                     <td className="px-6 py-4 text-center">
-                                        <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                                        <span
+                                            className={`rounded-full px-3 py-1 text-xs font-semibold ${r.status === "PAID"
+                                                    ? "bg-green-100 text-green-700"
+                                                    : r.status === "CONFIRMED"
+                                                        ? "bg-blue-100 text-blue-700"
+                                                        : r.status === "PLACED"
+                                                            ? "bg-yellow-100 text-yellow-700"
+                                                            : r.status === "PICKED_UP"
+                                                                ? "bg-purple-100 text-purple-700"
+                                                                : "bg-gray-100 text-gray-700"
+                                                }`}
+                                        >
                                             {r.status}
                                         </span>
                                     </td>
 
                                     <td className="px-6 py-4 text-center">
-                                        {r.payment ? (
-                                            <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                                                Paid
-                                            </span>
-                                        ) : (
-                                            <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
-                                                Unpaid
-                                            </span>
-                                        )}
+                                        <PaymentButton rental={r} />
                                     </td>
                                 </tr>
                             ))}
