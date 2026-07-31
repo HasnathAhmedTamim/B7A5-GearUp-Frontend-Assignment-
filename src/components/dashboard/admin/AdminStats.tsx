@@ -9,7 +9,7 @@ import {
     ShoppingBag,
     DollarSign,
 } from "lucide-react";
-
+import AdminStatsSkeleton from "./AdminStatsSkeleton";
 import { getDashboardStats } from "@/services/admin/admin.api";
 import RecentRentals from "./RecentRentals";
 
@@ -20,11 +20,7 @@ export default function AdminStats() {
     });
 
     if (isLoading) {
-        return (
-            <div className="py-10 text-center text-gray-500">
-                Loading dashboard...
-            </div>
-        );
+        return <AdminStatsSkeleton />;
     }
 
     if (isError || !data) {

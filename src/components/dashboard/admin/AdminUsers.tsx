@@ -26,6 +26,7 @@ import {
     getAllUsers,
     updateUserStatus,
 } from "@/services/admin/admin.api";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 
 
 export default function AdminUsers() {
@@ -123,13 +124,7 @@ export default function AdminUsers() {
 
 
     if (isLoading) {
-
-        return (
-            <div className="py-10 text-center">
-                Loading users...
-            </div>
-        );
-
+        return <TableSkeleton rows={6} columns={5} />;
     }
 
 

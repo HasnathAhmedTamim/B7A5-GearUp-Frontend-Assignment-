@@ -11,6 +11,7 @@ import {
     getProviderOrders,
     updateRentalStatus,
 } from "@/services/rental/rental.api";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 
 type RentalStatus = "CONFIRMED" | "PICKED_UP" | "RETURNED";
 
@@ -53,9 +54,10 @@ export default function ProviderOrders() {
 
     if (isLoading) {
         return (
-            <div className="flex h-80 items-center justify-center">
-                Loading...
-            </div>
+            <TableSkeleton
+                rows={5}
+                columns={6}
+            />
         );
     }
 

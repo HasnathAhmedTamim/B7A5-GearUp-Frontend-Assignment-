@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Gear } from "@/types/gear";
+import { IGear } from "@/types/gear";
 
 interface GearCardProps {
-    gear: Gear;
+    gear: IGear;
 }
 
 export default function GearCard({ gear }: GearCardProps) {

@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getAllRentals } from "@/services/admin/admin.api";
+import TableSkeleton from "@/components/shared/TableSkeleton";
 
 const statusStyles: Record<string, string> = {
     PLACED: "bg-yellow-100 text-yellow-700",
@@ -19,9 +20,10 @@ export default function AdminRentals() {
 
     if (isLoading) {
         return (
-            <div className="py-10 text-center">
-                Loading rentals...
-            </div>
+            <TableSkeleton
+                rows={8}
+                columns={6}
+            />
         );
     }
 
