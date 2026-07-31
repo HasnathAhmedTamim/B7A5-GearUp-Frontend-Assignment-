@@ -252,7 +252,7 @@ export default function MyRentals() {
                                     ">
 
 
-                                            <Image 
+                                            <img 
 
                                                 src={r.gear.image}
 
@@ -463,7 +463,7 @@ export default function MyRentals() {
                         ">
 
 
-                                <Image 
+                                <img 
 
                                     src={r.gear.image}
 

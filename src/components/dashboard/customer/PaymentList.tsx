@@ -286,7 +286,7 @@ export default function PaymentList() {
                                         ">
 
 
-                                                <Image 
+                                                <img
 
                                                     src={
                                                         payment
@@ -554,7 +554,7 @@ export default function PaymentList() {
                             ">
 
 
-                                    <Image 
+                                    <img 
 
                                         src={
                                             payment

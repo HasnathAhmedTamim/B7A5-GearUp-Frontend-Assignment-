@@ -344,10 +344,12 @@ export default function ProfilePage() {
 
 
                     <Image
-
+                        width={128}
+                        height={128}
                         src={avatar}
 
                         alt={user.name}
+
 
                         className="
                             h-28

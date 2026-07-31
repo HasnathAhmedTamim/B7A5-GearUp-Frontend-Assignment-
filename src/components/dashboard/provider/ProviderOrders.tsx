@@ -298,7 +298,8 @@ export default function ProviderOrders() {
                                     <div className="flex items-center gap-3">
 
 
-                                        <Image 
+                                        <img
+                                        
                                             src={order.gear.image}
                                             alt={order.gear.title}
                                             className="
