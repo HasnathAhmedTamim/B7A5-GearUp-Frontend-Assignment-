@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { Eye, EyeOff } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
@@ -18,6 +21,8 @@ type RegisterFormData = RegisterPayload;
 export default function RegisterForm() {
     const router = useRouter();
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -29,17 +34,12 @@ export default function RegisterForm() {
 
         onSuccess: (res) => {
             toast.success(res.message || "Registration successful");
-
-            router.push("/login");
+            router.push("/");
         },
 
         onError: (error) => {
-
-            toast.error(
-                getErrorMessage(error)
-            );
-
-        }
+            toast.error(getErrorMessage(error));
+        },
     });
 
     const onSubmit = (data: RegisterFormData) => {
@@ -47,22 +47,32 @@ export default function RegisterForm() {
     };
 
     return (
-        <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-            <h1 className="text-center text-3xl font-bold">
-                Create Account
-            </h1>
+        <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-xl sm:p-8">
 
-            <p className="mt-2 text-center text-gray-500">
-                Join GearUp today
-            </p>
+            {/* Heading */}
+
+            <div className="text-center">
+                <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                    Create Account
+                </h1>
+
+                <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
+                    Join GearUp and start renting sports gear today.
+                </p>
+            </div>
+
+            {/* Form */}
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="mt-8 space-y-5"
             >
+
+                {/* Name */}
+
                 <div>
-                    <label className="mb-2 block font-medium">
-                        Name
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                        Full Name
                     </label>
 
                     <input
@@ -71,19 +81,21 @@ export default function RegisterForm() {
                         {...register("name", {
                             required: "Name is required",
                         })}
-                        className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
+                        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
 
                     {errors.name && (
-                        <p className="mt-1 text-sm text-red-500">
+                        <p className="mt-2 text-sm text-red-500">
                             {errors.name.message}
                         </p>
                     )}
                 </div>
 
+                {/* Email */}
+
                 <div>
-                    <label className="mb-2 block font-medium">
-                        Email
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
+                        Email Address
                     </label>
 
                     <input
@@ -92,59 +104,88 @@ export default function RegisterForm() {
                         {...register("email", {
                             required: "Email is required",
                         })}
-                        className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
+                        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                     />
 
                     {errors.email && (
-                        <p className="mt-1 text-sm text-red-500">
+                        <p className="mt-2 text-sm text-red-500">
                             {errors.email.message}
                         </p>
                     )}
                 </div>
 
+                {/* Password */}
+
                 <div>
-                    <label className="mb-2 block font-medium">
+                    <label className="mb-2 block text-sm font-semibold text-gray-700">
                         Password
                     </label>
 
-                    <input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters",
-                            },
-                        })}
-                        className="w-full rounded-lg border px-4 py-3 outline-none focus:border-blue-600"
-                    />
+                    <div className="relative">
+
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
+                            {...register("password", {
+                                required: "Password is required",
+                                minLength: {
+                                    value: 6,
+                                    message:
+                                        "Password must be at least 6 characters",
+                                },
+                            })}
+                            className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                        />
+
+                        <button
+                            type="button"
+                            onClick={() =>
+                                setShowPassword(!showPassword)
+                            }
+                            className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 transition hover:text-blue-600"
+                        >
+                            {showPassword ? (
+                                <EyeOff size={20} />
+                            ) : (
+                                <Eye size={20} />
+                            )}
+                        </button>
+
+                    </div>
 
                     {errors.password && (
-                        <p className="mt-1 text-sm text-red-500">
+                        <p className="mt-2 text-sm text-red-500">
                             {errors.password.message}
                         </p>
                     )}
                 </div>
 
+                {/* Submit */}
+
                 <button
                     type="submit"
                     disabled={isPending}
-                    className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700 disabled:opacity-70"
+                    className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                    {isPending ? "Creating Account..." : "Register"}
+                    {isPending
+                        ? "Creating Account..."
+                        : "Create Account"}
                 </button>
+
             </form>
+
+            {/* Footer */}
 
             <p className="mt-6 text-center text-sm text-gray-600">
                 Already have an account?{" "}
                 <Link
                     href="/login"
-                    className="font-semibold text-blue-600 hover:underline"
+                    className="font-semibold text-blue-600 transition hover:underline"
                 >
                     Login
                 </Link>
             </p>
+
         </div>
     );
 }
