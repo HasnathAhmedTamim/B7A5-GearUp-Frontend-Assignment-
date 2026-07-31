@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import {
@@ -8,8 +7,8 @@ import {
     useQuery,
     useQueryClient,
 } from "@tanstack/react-query";
+
 import { toast } from "sonner";
-import { getErrorMessage } from "@/utils/getErrorMessage";
 
 import GearForm from "./GearForm";
 
@@ -17,82 +16,248 @@ import {
     getSingleGear,
     updateGear,
 } from "@/services/gear/gear.api";
+
 import { AddGearFormData } from "@/validation/gear.validation";
+import { getErrorMessage } from "@/utils/getErrorMessage";
+
+
 
 export default function EditGearForm() {
+
+
     const params = useParams();
+
     const router = useRouter();
+
     const queryClient = useQueryClient();
 
+
+
     const id = params.id as string;
+
+
+
 
     const {
         data: gear,
         isLoading,
         isError,
     } = useQuery({
-        queryKey: ["gear", id],
+
+        queryKey: [
+            "gear",
+            id
+        ],
+
         queryFn: () => getSingleGear(id),
+
         enabled: !!id,
+
     });
 
-    const { mutate, isPending } = useMutation({
+
+
+
+
+
+
+    const {
+        mutate,
+        isPending,
+    } = useMutation({
+
+
         mutationFn: (data: AddGearFormData) =>
             updateGear(id, data),
 
+
+
+
         onSuccess: (res) => {
-            toast.success(res.message);
+
+
+            toast.success(
+                res.message || "Gear updated successfully"
+            );
+
+
 
             queryClient.invalidateQueries({
-                queryKey: ["my-gear"],
+
+                queryKey: [
+                    "my-gear"
+                ]
+
             });
+
+
 
             queryClient.invalidateQueries({
-                queryKey: ["gear", id],
+
+                queryKey: [
+                    "gear",
+                    id
+                ]
+
             });
 
-            router.push("/dashboard/provider/my-gear");
+
+
+            queryClient.invalidateQueries({
+
+                queryKey: [
+                    "provider-dashboard"
+                ]
+
+            });
+
+
+
+            router.push(
+                "/dashboard/provider/my-gear"
+            );
+
+
         },
 
+
+
+
         onError: (error) => {
+
 
             toast.error(
                 getErrorMessage(error)
             );
 
+
         }
+
+
     });
 
+
+
+
+
+
+
+
     if (isLoading) {
+
+
         return (
-            <div className="rounded-xl border bg-white p-6">
-                Loading...
+
+            <div
+                className="
+                    rounded-xl
+                    border
+                    bg-white
+                    p-6
+                    text-center
+                    text-gray-500
+                "
+            >
+
+                Loading gear...
+
             </div>
+
         );
+
     }
+
+
+
+
+
+
 
     if (isError || !gear) {
+
+
         return (
-            <div className="rounded-xl border bg-white p-6 text-red-500">
+
+            <div
+                className="
+                    rounded-xl
+                    border
+                    bg-white
+                    p-6
+                    text-center
+                    text-red-500
+                "
+            >
+
                 Failed to load gear.
+
             </div>
+
         );
+
     }
 
+
+
+
+
+
+
     return (
-        <GearForm
-            defaultValues={{
-                title: gear.title,
-                description: gear.description,
-                brand: gear.brand,
-                image: gear.image,
-                pricePerDay: Number(gear.pricePerDay),
-                stock: Number(gear.stock),
-                categoryId: gear.categoryId,
-            }}
-            submitText="Update Gear"
-            isSubmitting={isPending}
-            onSubmit={(data) => mutate(data)}
-        />
+
+        <div
+            className="
+                mx-auto
+                w-full
+                max-w-4xl
+            "
+        >
+
+
+            <GearForm
+
+                defaultValues={{
+
+                    title: gear.title,
+
+                    description: gear.description,
+
+                    brand: gear.brand,
+
+                    image: gear.image,
+
+                    pricePerDay: Number(
+                        gear.pricePerDay
+                    ),
+
+                    stock: Number(
+                        gear.stock
+                    ),
+
+                    categoryId:
+                        gear.categoryId,
+
+                }}
+
+
+                submitText="Update Gear"
+
+
+                isSubmitting={
+                    isPending
+                }
+
+
+                onSubmit={(data) =>
+                    mutate(data)
+                }
+
+
+            />
+
+
+        </div>
+
     );
+
 }

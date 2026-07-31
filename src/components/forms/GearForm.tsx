@@ -1,193 +1,639 @@
 "use client";
 
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+
+import {
+    useForm,
+    SubmitHandler,
+} from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
+
 import { useCategories } from "@/hooks/category/useCategories";
+
 import { ICategory } from "@/types/category";
+
+
 import {
     addGearSchema,
     AddGearFormData,
 } from "@/validation/gear.validation";
 
+
+
 interface GearFormProps {
+
     defaultValues?: Partial<AddGearFormData>;
-    onSubmit: (data: AddGearFormData) => void;
+
+    onSubmit: (
+        data: AddGearFormData
+    ) => void;
+
     isSubmitting?: boolean;
+
     submitText: string;
+
 }
 
+
+
+
+
 export default function GearForm({
+
     defaultValues,
+
     onSubmit,
+
     isSubmitting = false,
+
     submitText,
+
 }: GearFormProps) {
-    const { data: categories = [] } = useCategories();
+
+
+
+    const {
+        data: categories = [],
+    } = useCategories();
+
+
+
+
 
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors },
-    } = useForm<AddGearFormData>({
-        resolver: zodResolver(addGearSchema),
-        defaultValues: {
-            title: "",
-            description: "",
-            brand: "",
-            image: "",
-            pricePerDay: 0,
-            stock: 0,
-            categoryId: "",
+
+        formState: {
+            errors,
         },
+
+    } = useForm<AddGearFormData>({
+
+        resolver: zodResolver(
+            addGearSchema
+        ),
+
+
+        defaultValues: {
+
+            title: "",
+
+            description: "",
+
+            brand: "",
+
+            image: "",
+
+            pricePerDay: 0,
+
+            stock: 0,
+
+            categoryId: "",
+
+        },
+
     });
 
+
+
+
+
+
     useEffect(() => {
+
         if (defaultValues) {
+
             reset(defaultValues);
+
         }
-    }, [defaultValues, reset]);
+
+    }, [
+        defaultValues,
+        reset
+    ]);
+
+
+
+
+
+
+
+    const submitHandler:
+        SubmitHandler<AddGearFormData> =
+        (data) => {
+
+            onSubmit(data);
+
+        };
+
+
+
+
+
+
+
+
 
     return (
+
         <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-5 rounded-xl border bg-white p-6 shadow"
+
+            onSubmit={
+                handleSubmit(
+                    submitHandler
+                )
+            }
+
+
+            className="
+                space-y-6
+                rounded-xl
+                border
+                bg-white
+                p-4
+                shadow-sm
+
+                sm:p-6
+
+                lg:p-8
+            "
+
         >
-            {/* Title */}
-            <div>
-                <label className="mb-2 block font-medium">Title</label>
 
-                <input
-                    {...register("title")}
-                    className="w-full rounded-lg border p-3"
-                />
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.title?.message}
-                </p>
-            </div>
 
-            {/* Brand */}
-            <div>
-                <label className="mb-2 block font-medium">Brand</label>
 
-                <input
-                    {...register("brand")}
-                    className="w-full rounded-lg border p-3"
-                />
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.brand?.message}
-                </p>
-            </div>
+            <div
+                className="
+                    grid
+                    gap-5
+                    md:grid-cols-2
+                "
+            >
 
-            {/* Image */}
-            <div>
-                <label className="mb-2 block font-medium">
-                    Image URL
-                </label>
 
-                <input
-                    {...register("image")}
-                    className="w-full rounded-lg border p-3"
-                />
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.image?.message}
-                </p>
-            </div>
 
-            {/* Price */}
-            <div>
-                <label className="mb-2 block font-medium">
-                    Price Per Day
-                </label>
 
-                <input
-                    type="number"
-                    {...register("pricePerDay", {
-                        valueAsNumber: true,
-                    })}
-                    className="w-full rounded-lg border p-3"
-                />
+                {/* Title */}
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.pricePerDay?.message}
-                </p>
-            </div>
-
-            {/* Stock */}
-            <div>
-                <label className="mb-2 block font-medium">
-                    Stock
-                </label>
-
-                <input
-                    type="number"
-                    {...register("stock", {
-                        valueAsNumber: true,
-                    })}
-                    className="w-full rounded-lg border p-3"
-                />
-
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.stock?.message}
-                </p>
-            </div>
-
-            {/* Category */}
-            <div>
-                <label className="mb-2 block font-medium">
-                    Category
-                </label>
-
-                <select
-                    {...register("categoryId")}
-                    className="w-full rounded-lg border p-3"
+                <FormField
+                    label="Title"
+                    error={errors.title?.message}
                 >
-                    <option value="">Select Category</option>
 
-                    {categories.map((category: ICategory) => (
-                        <option
-                            key={category.id}
-                            value={category.id}
-                        >
-                            {category.name}
+                    <input
+
+                        {...register(
+                            "title"
+                        )}
+
+                        placeholder="Enter gear title"
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    />
+
+                </FormField>
+
+
+
+
+
+
+
+
+
+                {/* Brand */}
+
+                <FormField
+
+                    label="Brand"
+
+                    error={
+                        errors.brand?.message
+                    }
+
+                >
+
+                    <input
+
+                        {...register(
+                            "brand"
+                        )}
+
+                        placeholder="Enter brand"
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    />
+
+
+                </FormField>
+
+
+
+
+
+
+
+
+
+                {/* Image */}
+
+                <FormField
+
+                    label="Image URL"
+
+                    error={
+                        errors.image?.message
+                    }
+
+                >
+
+
+                    <input
+
+                        {...register(
+                            "image"
+                        )}
+
+                        placeholder="https://image-url.com"
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    />
+
+
+                </FormField>
+
+
+
+
+
+
+
+
+
+                {/* Category */}
+
+                <FormField
+
+                    label="Category"
+
+                    error={
+                        errors.categoryId?.message
+                    }
+
+                >
+
+
+                    <select
+
+                        {...register(
+                            "categoryId"
+                        )}
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    >
+
+                        <option value="">
+                            Select Category
                         </option>
-                    ))}
-                </select>
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.categoryId?.message}
-                </p>
+
+                        {
+                            categories.map(
+                                (
+                                    category: ICategory
+                                ) => (
+
+                                    <option
+
+                                        key={
+                                            category.id
+                                        }
+
+                                        value={
+                                            category.id
+                                        }
+
+                                    >
+
+                                        {
+                                            category.name
+                                        }
+
+                                    </option>
+
+                                )
+                            )
+                        }
+
+
+                    </select>
+
+
+                </FormField>
+
+
+
+
+
+
+
+
+
+                {/* Price */}
+
+                <FormField
+
+                    label="Price Per Day"
+
+                    error={
+                        errors.pricePerDay?.message
+                    }
+
+                >
+
+
+                    <input
+
+                        type="number"
+
+                        {...register(
+                            "pricePerDay",
+                            {
+                                valueAsNumber: true
+                            }
+                        )}
+
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    />
+
+
+                </FormField>
+
+
+
+
+
+
+
+
+
+                {/* Stock */}
+
+                <FormField
+
+                    label="Stock"
+
+                    error={
+                        errors.stock?.message
+                    }
+
+                >
+
+
+                    <input
+
+                        type="number"
+
+                        {...register(
+                            "stock",
+                            {
+                                valueAsNumber: true
+                            }
+                        )}
+
+
+                        className="
+                            w-full
+                            rounded-lg
+                            border
+                            p-3
+                            outline-none
+                            focus:border-blue-600
+                        "
+
+                    />
+
+
+                </FormField>
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
 
             {/* Description */}
-            <div>
-                <label className="mb-2 block font-medium">
-                    Description
-                </label>
+
+            <FormField
+
+                label="Description"
+
+                error={
+                    errors.description?.message
+                }
+
+            >
+
 
                 <textarea
+
                     rows={5}
-                    {...register("description")}
-                    className="w-full rounded-lg border p-3"
+
+                    {...register(
+                        "description"
+                    )}
+
+                    placeholder="Write gear description..."
+
+                    className="
+                        w-full
+                        resize-none
+                        rounded-lg
+                        border
+                        p-3
+                        outline-none
+                        focus:border-blue-600
+                    "
+
                 />
 
-                <p className="mt-1 text-sm text-red-500">
-                    {errors.description?.message}
-                </p>
-            </div>
+
+            </FormField>
+
+
+
+
+
+
+
+
 
             <button
+
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-lg bg-black py-3 text-white transition hover:bg-gray-800 disabled:opacity-50"
+
+                disabled={
+                    isSubmitting
+                }
+
+
+                className="
+                    w-full
+                    rounded-lg
+                    bg-black
+                    py-3
+                    font-semibold
+                    text-white
+                    transition
+                    hover:bg-gray-800
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                "
+
             >
-                {isSubmitting ? "Processing..." : submitText}
+
+                {
+                    isSubmitting
+                        ?
+                        "Processing..."
+                        :
+                        submitText
+                }
+
+
             </button>
+
+
+
+
+
         </form>
+
     );
+
+}
+
+
+
+
+
+
+
+
+
+function FormField({
+
+    label,
+
+    error,
+
+    children,
+
+}: {
+
+    label: string;
+
+    error?: string;
+
+    children: React.ReactNode;
+
+}) {
+
+
+    return (
+
+        <div>
+
+
+            <label className="
+                mb-2
+                block
+                font-medium
+            ">
+
+                {label}
+
+            </label>
+
+
+            {children}
+
+
+
+            {
+                error && (
+
+                    <p className="
+                        mt-1
+                        text-sm
+                        text-red-500
+                    ">
+
+                        {error}
+
+                    </p>
+
+                )
+            }
+
+
+        </div>
+
+    );
+
 }

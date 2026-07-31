@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+
 interface Props {
+
     open: boolean;
+
     onClose: () => void;
 
     user: any;
@@ -22,43 +25,76 @@ interface Props {
     }) => void;
 
     loading?: boolean;
+
 }
 
 
+
+
 export default function EditProfileModal({
+
     open,
+
     onClose,
+
     user,
+
     onSubmit,
+
     loading = false,
+
 }: Props) {
 
 
+
     const [formData, setFormData] = useState({
+
         name: "",
+
         photo: "",
+
         phone: "",
+
         address: "",
+
         bio: "",
+
     });
+
+
+
 
 
 
     useEffect(() => {
 
+
         if (user) {
 
+
             setFormData({
+
                 name: user.name || "",
+
                 photo: user.profile?.photo || "",
+
                 phone: user.profile?.phone || "",
+
                 address: user.profile?.address || "",
+
                 bio: user.profile?.bio || "",
+
             });
+
 
         }
 
+
     }, [user]);
+
+
+
+
 
 
 
@@ -66,7 +102,12 @@ export default function EditProfileModal({
 
 
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+
+
+    const handleSubmit = (
+        e: React.FormEvent
+    ) => {
 
         e.preventDefault();
 
@@ -76,37 +117,103 @@ export default function EditProfileModal({
 
 
 
+
+
+
+
     return (
 
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+
+            className="
+                fixed
+                inset-0
+                z-50
+                flex
+                items-center
+                justify-center
+                overflow-y-auto
+                bg-black/50
+                p-4
+            "
+
             onClick={onClose}
+
         >
 
 
+
+
             <div
-                className="w-full max-w-lg rounded-xl bg-white shadow-xl"
-                onClick={(e) => e.stopPropagation()}
+
+                className="
+                    my-8
+                    w-full
+                    max-w-lg
+                    rounded-xl
+                    bg-white
+                    shadow-xl
+                "
+
+                onClick={
+                    (e) =>
+                        e.stopPropagation()
+                }
+
             >
 
 
-                <form onSubmit={handleSubmit}>
+
+
+                <form
+                    onSubmit={handleSubmit}
+                >
+
+
+
 
 
                     {/* Header */}
 
-                    <div className="flex items-center justify-between border-b p-5">
 
-                        <h2 className="text-xl font-semibold">
+                    <div
+                        className="
+                            flex
+                            items-center
+                            justify-between
+                            border-b
+                            p-5
+                        "
+                    >
+
+
+                        <h2 className="
+                            text-lg
+                            font-semibold
+                            sm:text-xl
+                        ">
                             Edit Profile
                         </h2>
 
 
+
                         <button
+
                             type="button"
+
                             onClick={onClose}
+
+                            className="
+                                rounded-lg
+                                p-2
+                                hover:bg-gray-100
+                            "
+
                         >
+
                             <X size={20} />
+
+
                         </button>
 
 
@@ -114,156 +221,337 @@ export default function EditProfileModal({
 
 
 
+
+
+
+
+
+
                     {/* Body */}
 
-                    <div className="space-y-5 p-5">
 
+                    <div
 
-                        <div>
+                        className="
+                            max-h-[65vh]
+                            space-y-5
+                            overflow-y-auto
+                            p-5
+                        "
 
-                            <label className="mb-2 block text-sm font-medium">
-                                Name
-                            </label>
-
-                            <Input
-                                value={formData.name}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        name: e.target.value
-                                    })
-                                }
-                            />
-
-                        </div>
+                    >
 
 
 
-                        <div>
 
-                            <label className="mb-2 block text-sm font-medium">
-                                Photo URL
-                            </label>
+
+
+                        <FormItem label="Name">
 
                             <Input
-                                value={formData.photo}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        photo: e.target.value
-                                    })
+
+                                value={
+                                    formData.name
                                 }
-                                placeholder="https://image-url.com"
+
+                                disabled={loading}
+
+                                onChange={
+                                    (e) =>
+                                        setFormData({
+                                            ...formData,
+                                            name: e.target.value
+                                        })
+                                }
+
                             />
 
-                        </div>
+
+                        </FormItem>
 
 
 
-                        <div>
 
-                            <label className="mb-2 block text-sm font-medium">
-                                Phone
-                            </label>
+
+
+
+
+                        <FormItem label="Photo URL">
+
 
                             <Input
-                                value={formData.phone}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        phone: e.target.value
-                                    })
+
+                                value={
+                                    formData.photo
                                 }
+
+                                disabled={loading}
+
+                                placeholder="
+                                    https://image-url.com
+                                "
+
+                                onChange={
+                                    (e) =>
+                                        setFormData({
+                                            ...formData,
+                                            photo: e.target.value
+                                        })
+                                }
+
                             />
 
-                        </div>
+
+                        </FormItem>
 
 
 
-                        <div>
 
-                            <label className="mb-2 block text-sm font-medium">
-                                Address
-                            </label>
+
+
+
+
+
+                        <FormItem label="Phone">
+
 
                             <Input
-                                value={formData.address}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        address: e.target.value
-                                    })
+
+                                value={
+                                    formData.phone
                                 }
+
+                                disabled={loading}
+
+                                onChange={
+                                    (e) =>
+                                        setFormData({
+                                            ...formData,
+                                            phone: e.target.value
+                                        })
+                                }
+
                             />
 
-                        </div>
+
+                        </FormItem>
 
 
 
-                        <div>
 
-                            <label className="mb-2 block text-sm font-medium">
-                                Bio
-                            </label>
+
+
+
+
+                        <FormItem label="Address">
+
+
+                            <Input
+
+                                value={
+                                    formData.address
+                                }
+
+                                disabled={loading}
+
+                                onChange={
+                                    (e) =>
+                                        setFormData({
+                                            ...formData,
+                                            address: e.target.value
+                                        })
+                                }
+
+                            />
+
+
+                        </FormItem>
+
+
+
+
+
+
+
+
+                        <FormItem label="Bio">
+
 
                             <Textarea
+
                                 rows={4}
-                                value={formData.bio}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        bio: e.target.value
-                                    })
+
+                                disabled={loading}
+
+                                value={
+                                    formData.bio
                                 }
+
+                                onChange={
+                                    (e) =>
+                                        setFormData({
+                                            ...formData,
+                                            bio: e.target.value
+                                        })
+                                }
+
                             />
 
-                        </div>
+
+                        </FormItem>
+
+
 
 
 
                     </div>
+
+
+
+
+
 
 
 
 
                     {/* Footer */}
 
-                    <div className="flex justify-end gap-3 border-t p-5">
+
+                    <div
+
+                        className="
+                            flex
+                            flex-col
+                            gap-3
+                            border-t
+                            p-5
+
+                            sm:flex-row
+                            sm:justify-end
+                        "
+
+                    >
+
 
 
                         <Button
+
                             type="button"
+
                             variant="outline"
+
                             onClick={onClose}
+
+                            disabled={loading}
+
+                            className="
+                                w-full
+                                sm:w-auto
+                            "
+
                         >
+
                             Cancel
+
                         </Button>
 
 
+
+
+
                         <Button
+
                             type="submit"
+
                             disabled={loading}
+
+                            className="
+                                w-full
+                                sm:w-auto
+                            "
+
                         >
 
                             {
                                 loading
-                                    ? "Updating..."
-                                    : "Update Profile"
+                                    ?
+                                    "Updating..."
+                                    :
+                                    "Update Profile"
                             }
 
+
                         </Button>
+
+
 
 
                     </div>
 
 
+
+
+
                 </form>
+
 
 
             </div>
 
 
+
+
+
+        </div>
+
+
+    );
+
+}
+
+
+
+
+
+
+
+
+function FormItem({
+
+    label,
+
+    children,
+
+}: {
+
+    label: string;
+
+    children: React.ReactNode;
+
+}) {
+
+
+    return (
+
+        <div>
+
+            <label className="
+                mb-2
+                block
+                text-sm
+                font-medium
+            ">
+
+                {label}
+
+            </label>
+
+
+            {children}
+
+
         </div>
 
     );
+
 }

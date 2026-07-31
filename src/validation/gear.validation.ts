@@ -9,18 +9,16 @@ export const addGearSchema = z.object({
 
   image: z.string().url("Please enter a valid image URL"),
 
-  pricePerDay: z.preprocess(
-    (value) => Number(value),
-    z.number().positive("Price must be greater than 0"),
-  ),
+  pricePerDay: z.number().positive("Price must be greater than 0"),
 
-  stock: z.preprocess(
-    (value) => Number(value),
-    z.number().int().positive("Stock must be greater than 0"),
-  ),
+  stock: z
+    .number()
+    .int("Stock must be an integer")
+    .positive("Stock must be greater than 0"),
 
   categoryId: z.string().min(1, "Please select a category"),
 });
 
 export type AddGearFormData = z.infer<typeof addGearSchema>;
+
 export type UpdateGearFormData = Partial<AddGearFormData>;
