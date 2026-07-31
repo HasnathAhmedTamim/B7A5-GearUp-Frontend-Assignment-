@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
@@ -8,21 +8,19 @@ import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
 
 import { useAuthContext } from "@/providers/AuthProvider";
 
-
 interface Props {
     children: ReactNode;
 }
-
 
 export default function DashboardLayout({
     children,
 }: Props) {
 
-
     const router = useRouter();
 
     const { user, loading } = useAuthContext();
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
     useEffect(() => {
@@ -35,11 +33,10 @@ export default function DashboardLayout({
 
 
 
-
     if (loading || !user) {
 
         return (
-            <div className="flex min-h-screen items-center justify-center">
+            <div className="flex min-h-screen items-center justify-center bg-gray-100">
 
                 <p className="text-gray-500">
                     Checking authentication...
@@ -54,27 +51,49 @@ export default function DashboardLayout({
 
     return (
 
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen w-full overflow-x-hidden bg-gray-100">
 
 
-            <DashboardSidebar />
+            <DashboardSidebar
+                open={sidebarOpen}
+                setOpen={setSidebarOpen}
+            />
 
-            <DashboardTopbar />
 
 
-            <main
-                className="
-                    flex-1
-                    p-4
-                    pt-24
-                    md:p-8
-                    md:pt-24
-                "
-            >
+            <div className="flex min-w-0 flex-1 flex-col">
 
-                {children}
 
-            </main>
+                <DashboardTopbar
+                    open={sidebarOpen}
+                    setOpen={setSidebarOpen}
+                />
+
+
+
+                <main
+                    className="
+                        min-w-0
+                        flex-1
+                        overflow-x-hidden
+                        p-4
+                        pt-20
+                        sm:p-5
+                        md:p-8
+                        md:pt-24
+                    "
+                >
+
+                    <div className="w-full max-w-full">
+
+                        {children}
+
+                    </div>
+
+                </main>
+
+
+            </div>
 
 
         </div>

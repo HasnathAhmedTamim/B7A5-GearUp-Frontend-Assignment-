@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+
 import {
     LayoutDashboard,
     Package,
@@ -10,15 +11,22 @@ import {
     Users,
     User,
     LogOut,
-    Menu,
     X,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
+
 import { useAuthContext } from "@/providers/AuthProvider";
 
 
+interface Props {
+    open: boolean;
+    setOpen: (value: boolean) => void;
+}
+
+
 const menus = {
+
     CUSTOMER: [
         {
             title: "Dashboard",
@@ -41,6 +49,7 @@ const menus = {
             icon: User,
         },
     ],
+
 
     PROVIDER: [
         {
@@ -70,6 +79,7 @@ const menus = {
         },
     ],
 
+
     ADMIN: [
         {
             title: "Dashboard",
@@ -97,15 +107,22 @@ const menus = {
             icon: Package,
         },
     ],
+
 };
 
 
-export default function DashboardSidebar() {
+
+export default function DashboardSidebar({
+    open,
+    setOpen,
+}: Props) {
+
 
     const pathname = usePathname();
+
     const router = useRouter();
 
-    const [open, setOpen] = useState(false);
+
     const [loggingOut, setLoggingOut] = useState(false);
 
 
@@ -113,10 +130,11 @@ export default function DashboardSidebar() {
 
 
 
-    // close mobile sidebar after route change
     useEffect(() => {
+
         setOpen(false);
-    }, [pathname]);
+
+    }, [pathname, setOpen]);
 
 
 
@@ -146,79 +164,71 @@ export default function DashboardSidebar() {
 
 
     return (
+
         <>
-
-            {/* Mobile Menu Button */}
-
-            <button
-                onClick={() => setOpen(true)}
-                className="
-                    fixed
-                    left-4
-                    top-4
-                    z-50
-                    rounded-lg
-                    bg-blue-600
-                    p-2
-                    text-white
-                    shadow-md
-                    md:hidden
-                "
-            >
-                <Menu size={22} />
-            </button>
-
-
 
             {/* Overlay */}
 
-            {open && (
-                <div
-                    onClick={() => setOpen(false)}
-                    className="
-                        fixed
-                        inset-0
-                        z-40
-                        bg-black/40
-                        backdrop-blur-sm
-                        md:hidden
-                    "
-                />
-            )}
+            <div
+                onClick={() => setOpen(false)}
+                className={`
+                    fixed
+                    inset-0
+                    z-40
+                    bg-black/40
+                    backdrop-blur-sm
+                    transition
+
+                    ${open
+                        ? "visible opacity-100"
+                        : "invisible opacity-0"
+                    }
+
+                    md:hidden
+                `}
+            />
 
 
 
             {/* Sidebar */}
 
             <aside
+
                 className={`
                     fixed
                     inset-y-0
                     left-0
                     z-50
                     flex
-                    w-64
+                    w-72
                     flex-col
                     border-r
                     bg-white
+                    shadow-xl
                     transition-transform
                     duration-300
+
 
                     ${open
                         ? "translate-x-0"
                         : "-translate-x-full"
                     }
 
+
                     md:static
+                    md:w-64
                     md:min-h-screen
                     md:translate-x-0
+                    md:shadow-none
                 `}
+
             >
+
 
 
                 {/* Header */}
 
-                <div className="border-b p-6">
+                <div className="border-b p-5">
 
 
                     <div className="flex items-center justify-between">
@@ -229,9 +239,10 @@ export default function DashboardSidebar() {
                         </h2>
 
 
+
                         <button
                             onClick={() => setOpen(false)}
-                            className="md:hidden"
+                            className="rounded-md p-1 hover:bg-gray-100 md:hidden"
                         >
                             <X size={22} />
                         </button>
@@ -241,13 +252,14 @@ export default function DashboardSidebar() {
 
 
 
-                    <div className="mt-5">
+                    <div className="mt-6 flex items-center gap-3">
+
 
                         <div
                             className="
                                 flex
-                                h-10
-                                w-10
+                                h-11
+                                w-11
                                 items-center
                                 justify-center
                                 rounded-full
@@ -261,26 +273,29 @@ export default function DashboardSidebar() {
                         </div>
 
 
-                        <p className="mt-3 font-semibold">
-                            {user?.name}
-                        </p>
+
+                        <div>
+
+                            <p className="font-semibold">
+                                {user?.name}
+                            </p>
 
 
-                        <span
-                            className="
-                                mt-1
-                                inline-block
-                                rounded-full
-                                bg-blue-100
-                                px-3
-                                py-1
-                                text-xs
-                                font-medium
-                                text-blue-700
-                            "
-                        >
-                            {user?.role}
-                        </span>
+                            <span
+                                className="
+                                    rounded-full
+                                    bg-blue-100
+                                    px-3
+                                    py-1
+                                    text-xs
+                                    text-blue-700
+                                "
+                            >
+                                {user?.role}
+                            </span>
+
+
+                        </div>
 
 
                     </div>
@@ -291,8 +306,8 @@ export default function DashboardSidebar() {
 
 
 
-
                 {/* Navigation */}
+
 
                 <nav className="flex-1 space-y-2 overflow-y-auto p-4">
 
@@ -305,39 +320,42 @@ export default function DashboardSidebar() {
 
                         const active =
                             pathname === menu.href ||
-                            pathname.startsWith(
-                                menu.href + "/"
-                            );
+                            pathname.startsWith(menu.href + "/");
+
 
 
                         return (
 
                             <Link
+
                                 key={menu.href}
+
                                 href={menu.href}
+
                                 className={`
                                     flex
                                     items-center
                                     gap-3
-                                    rounded-lg
+                                    rounded-xl
                                     px-4
                                     py-3
+                                    text-sm
+                                    font-medium
                                     transition
 
+
                                     ${active
-                                        ?
-                                        "bg-blue-600 text-white shadow"
-                                        :
-                                        "text-gray-700 hover:bg-gray-100"
+                                        ? "bg-blue-600 text-white"
+                                        : "text-gray-700 hover:bg-gray-100"
                                     }
                                 `}
                             >
 
+
                                 <Icon size={18} />
 
-                                <span className="font-medium">
-                                    {menu.title}
-                                </span>
+
+                                {menu.title}
 
 
                             </Link>
@@ -356,31 +374,35 @@ export default function DashboardSidebar() {
 
                 {/* Logout */}
 
+
                 <div className="border-t p-4">
 
 
                     <button
-                        disabled={loggingOut}
+
                         onClick={handleLogout}
+
+                        disabled={loggingOut}
+
                         className="
                             flex
                             w-full
                             items-center
                             justify-center
                             gap-2
-                            rounded-lg
+                            rounded-xl
                             bg-red-500
                             px-4
                             py-3
                             text-white
-                            transition
                             hover:bg-red-600
-                            disabled:cursor-not-allowed
-                            disabled:opacity-70
+                            disabled:opacity-60
                         "
+
                     >
 
                         <LogOut size={18} />
+
 
                         {
                             loggingOut
@@ -397,6 +419,8 @@ export default function DashboardSidebar() {
 
             </aside>
 
+
         </>
+
     );
 }

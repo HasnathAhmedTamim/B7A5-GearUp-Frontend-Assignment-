@@ -1,62 +1,150 @@
 "use client";
 
+import Link from "next/link";
+
 import {
     Bell,
+    Home,
+    Menu,
     UserCircle,
 } from "lucide-react";
 
 import { useAuthContext } from "@/providers/AuthProvider";
 
 
-export default function DashboardTopbar() {
+interface Props {
+    open: boolean;
+    setOpen: (value: boolean) => void;
+}
+
+
+export default function DashboardTopbar({
+    open,
+    setOpen,
+}: Props) {
+
 
     const { user } = useAuthContext();
 
 
+
     return (
+
         <header
             className="
                 fixed
-                right-0
                 top-0
+                right-0
+                left-0
                 z-30
                 flex
                 h-16
-                w-full
                 items-center
                 justify-between
                 border-b
                 bg-white
                 px-4
+                shadow-sm
+
+                md:left-64
                 md:px-8
-                md:pl-72
             "
         >
 
 
-            {/* Left */}
+            {/* Left Section */}
 
-            <div>
+            <div className="flex items-center gap-3">
 
-                <h2 className="text-lg font-semibold text-gray-800">
-                    Welcome back 👋
-                </h2>
+
+                {/* Mobile Menu Button */}
+
+                <button
+                    onClick={() => setOpen(!open)}
+                    className="
+                        rounded-lg
+                        bg-blue-600
+                        p-2
+                        text-white
+                        shadow
+                        transition
+                        hover:bg-blue-700
+                        md:hidden
+                    "
+                >
+                    <Menu size={20} />
+                </button>
+
+
+
+                {/* Home Button */}
+
+                <Link
+                    href="/"
+                    className="
+                        flex
+                        items-center
+                        gap-2
+                        rounded-lg
+                        border
+                        px-3
+                        py-2
+                        text-sm
+                        font-medium
+                        text-gray-700
+                        transition
+                        hover:bg-gray-100
+                    "
+                >
+
+                    <Home size={18} />
+
+
+                    <span className="hidden sm:inline">
+                        Home
+                    </span>
+
+
+                </Link>
+
+
+
+
+                {/* Welcome */}
+
+                <div className="hidden lg:block">
+
+
+                    <h2 className="text-lg font-semibold text-gray-800">
+                        Welcome back 👋
+                    </h2>
+
+
+                </div>
+
 
             </div>
 
 
 
 
-            {/* Right */}
 
-            <div className="flex items-center gap-5">
 
+            {/* Right Section */}
+
+
+            <div className="flex items-center gap-3 sm:gap-5">
+
+
+
+                {/* Notification */}
 
                 <button
                     className="
                         relative
                         rounded-full
                         p-2
+                        transition
                         hover:bg-gray-100
                     "
                 >
@@ -76,19 +164,24 @@ export default function DashboardTopbar() {
                         "
                     />
 
+
                 </button>
 
 
 
 
 
+                {/* User */}
+
                 <div
                     className="
                         flex
                         items-center
-                        gap-3
+                        gap-2
                     "
                 >
+
+
 
                     <div
                         className="
@@ -97,27 +190,33 @@ export default function DashboardTopbar() {
                             p-2
                         "
                     >
+
                         <UserCircle
-                            className="text-blue-600"
                             size={28}
+                            className="text-blue-600"
                         />
+
                     </div>
 
 
 
+
+
                     <div className="hidden md:block">
+
 
                         <p className="text-sm font-semibold">
                             {user?.name}
                         </p>
 
 
+
                         <span
                             className="
-                                rounded
+                                rounded-full
                                 bg-blue-100
                                 px-2
-                                py-0.5
+                                py-1
                                 text-xs
                                 text-blue-700
                             "
@@ -125,7 +224,9 @@ export default function DashboardTopbar() {
                             {user?.role}
                         </span>
 
+
                     </div>
+
 
 
                 </div>
@@ -135,5 +236,6 @@ export default function DashboardTopbar() {
 
 
         </header>
+
     );
 }
