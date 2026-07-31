@@ -27,7 +27,7 @@ export const loginUser = async (payload: LoginPayload) => {
 export const registerUser = async (payload: RegisterPayload) => {
   const { data } = await api.post<ApiResponse<User>>(
     "/users/register",
-    payload
+    payload,
   );
 
   return data;

@@ -27,3 +27,8 @@ export const getAllRentals = async () => {
   const { data } = await api.get("/admin/rentals");
   return data.data;
 };
+
+export const getMe = async () => {
+  const { data } = await api.get("/auth/me");
+  return data.data;
+};
