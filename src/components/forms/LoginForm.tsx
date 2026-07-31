@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import { loginUser } from "@/services/auth/auth.api";
 import { useAuthContext } from "@/providers/AuthProvider";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type LoginFormData = {
   email: string;
@@ -39,11 +40,13 @@ export default function LoginForm() {
       router.refresh();
     },
 
-    onError: (error: any) => {
+    onError: (error) => {
+
       toast.error(
-        error?.response?.data?.message || "Login failed"
+        getErrorMessage(error)
       );
-    },
+
+    }
   });
 
   const onSubmit = (data: LoginFormData) => {

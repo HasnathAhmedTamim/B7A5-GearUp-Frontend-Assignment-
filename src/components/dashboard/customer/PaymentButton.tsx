@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { createCheckoutSession } from "@/services/payment/payment.api";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 interface PaymentButtonProps {
     rental: any;
@@ -20,12 +21,13 @@ export default function PaymentButton({
             window.location.href = data.checkoutUrl;
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message ||
-                "Unable to start payment."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     if (rental.payment) {

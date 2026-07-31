@@ -17,6 +17,7 @@ import { getCurrentUser } from "@/services/auth/auth.api";
 import { updateProfile } from "@/services/user/user.api";
 
 import EditProfileModal from "./EditProfileModal";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 
 export default function ProfilePage() {
@@ -62,13 +63,13 @@ export default function ProfilePage() {
         },
 
 
-        onError: () => {
+        onError: (error) => {
 
             toast.error(
-                "Failed to update profile"
+                getErrorMessage(error)
             );
 
-        },
+        }
 
     });
 
@@ -222,8 +223,8 @@ export default function ProfilePage() {
                             <span
 
                                 className={`rounded-full px-4 py-1 text-sm font-semibold ${user.status === "ACTIVE"
-                                        ? "bg-green-100 text-green-700"
-                                        : "bg-red-100 text-red-700"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
                                     }`}
 
                             >

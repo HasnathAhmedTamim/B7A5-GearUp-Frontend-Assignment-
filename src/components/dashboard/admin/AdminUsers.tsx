@@ -27,6 +27,7 @@ import {
     updateUserStatus,
 } from "@/services/admin/admin.api";
 import TableSkeleton from "@/components/shared/TableSkeleton";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 
 export default function AdminUsers() {
@@ -88,14 +89,13 @@ export default function AdminUsers() {
 
 
 
-        onError: (error: any) => {
+        onError: (error) => {
 
             toast.error(
-                error?.response?.data?.message ||
-                "Failed to update user."
+                getErrorMessage(error)
             );
 
-        },
+        }
 
     });
 

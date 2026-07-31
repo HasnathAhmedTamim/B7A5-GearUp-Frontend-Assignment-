@@ -11,6 +11,7 @@ import {
     registerUser,
     RegisterPayload,
 } from "@/services/auth/auth.api";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type RegisterFormData = RegisterPayload;
 
@@ -32,11 +33,13 @@ export default function RegisterForm() {
             router.push("/login");
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message || "Registration failed"
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     const onSubmit = (data: RegisterFormData) => {

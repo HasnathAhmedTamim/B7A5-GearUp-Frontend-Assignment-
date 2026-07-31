@@ -12,6 +12,7 @@ import {
     updateRentalStatus,
 } from "@/services/rental/rental.api";
 import TableSkeleton from "@/components/shared/TableSkeleton";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type RentalStatus = "CONFIRMED" | "PICKED_UP" | "RETURNED";
 
@@ -44,12 +45,13 @@ export default function ProviderOrders() {
             });
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message ||
-                "Failed to update rental status."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     if (isLoading) {

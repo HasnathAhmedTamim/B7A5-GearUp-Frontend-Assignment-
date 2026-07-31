@@ -14,6 +14,7 @@ import {
     rentalSchema,
     RentalFormData,
 } from "@/validation/rental.validation";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 interface RentalFormProps {
     gearId: string;
@@ -69,12 +70,13 @@ export default function RentalForm({
             router.push("/dashboard/customer/rentals");
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message ||
-                "Rental failed."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     const onSubmit = (data: RentalFormData) => {

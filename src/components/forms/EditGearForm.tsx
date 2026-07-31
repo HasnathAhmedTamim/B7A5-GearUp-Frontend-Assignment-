@@ -9,6 +9,7 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 import GearForm from "./GearForm";
 
@@ -53,12 +54,13 @@ export default function EditGearForm() {
             router.push("/dashboard/provider/my-gear");
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message ||
-                "Failed to update gear."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     if (isLoading) {

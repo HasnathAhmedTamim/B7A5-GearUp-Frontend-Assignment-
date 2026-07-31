@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 import CategoryModal from "./CategoryModal";
 
 import {
@@ -55,9 +56,13 @@ export default function AdminCategories() {
             });
         },
 
-        onError: () => {
-            toast.error("Failed to delete category");
-        },
+        onError: (error) => {
+
+            toast.error(
+                getErrorMessage(error)
+            );
+
+        }
     });
     const createMutation = useMutation({
         mutationFn: createCategory,
@@ -72,8 +77,12 @@ export default function AdminCategories() {
             setOpenModal(false);
         },
 
-        onError: () => {
-            toast.error("Failed to create category");
+        onError: (error) => {
+
+            toast.error(
+                getErrorMessage(error)
+            );
+
         },
     });
 
@@ -100,9 +109,13 @@ export default function AdminCategories() {
             setSelectedCategory(null);
         },
 
-        onError: () => {
-            toast.error("Failed to update category");
-        },
+        onError: (error) => {
+
+            toast.error(
+                getErrorMessage(error)
+            );
+
+        }
     });
 
     if (isLoading) {

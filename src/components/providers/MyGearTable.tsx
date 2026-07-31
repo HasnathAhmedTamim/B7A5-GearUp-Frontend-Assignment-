@@ -26,6 +26,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export default function MyGearTable() {
     const queryClient = useQueryClient();
@@ -50,12 +51,13 @@ export default function MyGearTable() {
             });
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message ||
-                "Failed to delete gear."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     if (isLoading) {

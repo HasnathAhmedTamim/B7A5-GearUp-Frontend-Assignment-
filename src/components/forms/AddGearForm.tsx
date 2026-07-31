@@ -9,6 +9,7 @@ import GearForm from "./GearForm";
 
 import { createGear } from "@/services/gear/gear.api";
 import { AddGearFormData } from "@/validation/gear.validation";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
 export default function AddGearForm() {
     const router = useRouter();
@@ -27,11 +28,13 @@ export default function AddGearForm() {
             router.push("/dashboard/provider/my-gear");
         },
 
-        onError: (error: any) => {
+        onError: (error) => {
+
             toast.error(
-                error?.response?.data?.message || "Failed to create gear."
+                getErrorMessage(error)
             );
-        },
+
+        }
     });
 
     const handleSubmit = (data: AddGearFormData) => {
