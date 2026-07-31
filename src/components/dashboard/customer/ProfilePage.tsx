@@ -37,6 +37,7 @@ import EditProfileModal from "./EditProfileModal";
 import {
     getErrorMessage,
 } from "@/utils/getErrorMessage";
+import Image from "next/image";
 
 
 
@@ -342,7 +343,7 @@ export default function ProfilePage() {
 
 
 
-                    <img
+                    <Image
 
                         src={avatar}
 

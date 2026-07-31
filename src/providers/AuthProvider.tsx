@@ -10,6 +10,8 @@ import {
     useState,
 } from "react";
 
+import axios from "axios";
+
 import { getCurrentUser, logoutUser } from "@/services/auth/auth.api";
 import { User } from "@/types/auth";
 
@@ -37,12 +39,18 @@ export default function AuthProvider({
 
             const res = await getCurrentUser();
 
-            console.log("Current User:", res);
-
             setUser(res.data);
         } catch (error) {
-            console.error("Failed to fetch current user:", error);
-            setUser(null);
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    // Guest user
+                    setUser(null);
+                } else {
+                    console.error(error);
+                }
+            } else {
+                console.error(error);
+            }
         } finally {
             setLoading(false);
         }
@@ -55,8 +63,6 @@ export default function AuthProvider({
     const logout = useCallback(async () => {
         try {
             await logoutUser();
-        } catch (error) {
-            console.error(error);
         } finally {
             setUser(null);
         }

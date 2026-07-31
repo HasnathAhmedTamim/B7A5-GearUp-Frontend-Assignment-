@@ -1,3 +1,4 @@
+import axios from "axios";
 import { api } from "@/lib/axios";
 import { User } from "@/types/auth";
 
@@ -20,7 +21,6 @@ interface ApiResponse<T> {
 
 export const loginUser = async (payload: LoginPayload) => {
   const { data } = await api.post<ApiResponse<User>>("/auth/login", payload);
-
   return data;
 };
 
@@ -34,13 +34,23 @@ export const registerUser = async (payload: RegisterPayload) => {
 };
 
 export const getCurrentUser = async () => {
-  const { data } = await api.get<ApiResponse<User>>("/auth/me");
+  try {
+    const { data } = await api.get<ApiResponse<User>>("/auth/me");
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      return {
+        success: false,
+        message: "Unauthenticated",
+        data: null,
+      };
+    }
 
-  return data;
+    throw error;
+  }
 };
 
 export const logoutUser = async () => {
   const { data } = await api.post<ApiResponse<null>>("/auth/logout");
-
   return data;
 };

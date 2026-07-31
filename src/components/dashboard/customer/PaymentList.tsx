@@ -10,6 +10,7 @@ import {
 import {
     getMyPayments,
 } from "@/services/payment/payment.api";
+import Image from "next/image";
 
 
 
@@ -285,7 +286,7 @@ export default function PaymentList() {
                                         ">
 
 
-                                                <img
+                                                <Image 
 
                                                     src={
                                                         payment
@@ -553,7 +554,7 @@ export default function PaymentList() {
                             ">
 
 
-                                    <img
+                                    <Image 
 
                                         src={
                                             payment

@@ -15,6 +15,7 @@ import {
 
 import TableSkeleton from "@/components/shared/TableSkeleton";
 import { getErrorMessage } from "@/utils/getErrorMessage";
+import Image from "next/image";
 
 
 type RentalStatus =
@@ -297,7 +298,7 @@ export default function ProviderOrders() {
                                     <div className="flex items-center gap-3">
 
 
-                                        <img
+                                        <Image 
                                             src={order.gear.image}
                                             alt={order.gear.title}
                                             className="

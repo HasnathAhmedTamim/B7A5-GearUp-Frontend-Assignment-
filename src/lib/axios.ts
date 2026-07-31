@@ -11,26 +11,14 @@ export const api = axios.create({
 });
 
 // Response Interceptor
-
 api.interceptors.response.use(
   (response) => {
     return response;
   },
 
-  async (error) => {
-    const status = error.response?.status;
-
-    if (status === 401) {
-      // avoid redirect loop
-
-      if (
-        typeof window !== "undefined" &&
-        !window.location.pathname.includes("/login")
-      ) {
-        window.location.href = "/login";
-      }
-    }
-
+  (error) => {
+    // Don't redirect here.
+    // Let each protected page handle authentication.
     return Promise.reject(error);
   },
 );

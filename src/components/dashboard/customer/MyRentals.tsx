@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
 import {
     getMyRentals,
@@ -251,7 +252,7 @@ export default function MyRentals() {
                                     ">
 
 
-                                            <img
+                                            <Image 
 
                                                 src={r.gear.image}
 
@@ -462,7 +463,7 @@ export default function MyRentals() {
                         ">
 
 
-                                <img
+                                <Image 
 
                                     src={r.gear.image}
 
