@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import Container from "../layout/Container";
 import GearCard from "../gear/GearCard";
+import GearCardSkeleton from "../shared/GearCardSkeleton";
 
 import { getFeaturedGear } from "@/services/gear/gear.api";
 import { Gear } from "@/types/gear";
@@ -21,16 +22,22 @@ export default function FeaturedGear() {
 
     if (isLoading) {
         return (
-            <section className="py-20">
+            <section className="py-14 sm:py-16 lg:py-20">
                 <Container>
                     <div className="text-center">
-                        <h2 className="text-4xl font-bold">
+                        <h2 className="text-3xl font-bold sm:text-4xl">
                             Featured Gear
                         </h2>
 
-                        <p className="mt-4 text-gray-500">
-                            Loading...
+                        <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-600 sm:text-base">
+                            Browse our most popular rental equipment.
                         </p>
+                    </div>
+
+                    <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <GearCardSkeleton key={index} />
+                        ))}
                     </div>
                 </Container>
             </section>
@@ -39,15 +46,16 @@ export default function FeaturedGear() {
 
     if (isError) {
         return (
-            <section className="py-20">
+            <section className="py-14 sm:py-16 lg:py-20">
                 <Container>
                     <div className="text-center">
-                        <h2 className="text-4xl font-bold">
+                        <h2 className="text-3xl font-bold sm:text-4xl">
                             Featured Gear
                         </h2>
 
                         <p className="mt-4 text-red-500">
-                            {(error as Error).message || "Failed to load featured gear."}
+                            {(error as Error).message ||
+                                "Failed to load featured gear."}
                         </p>
                     </div>
                 </Container>
@@ -56,19 +64,19 @@ export default function FeaturedGear() {
     }
 
     return (
-        <section className="py-20">
+        <section className="py-14 sm:py-16 lg:py-20">
             <Container>
                 <div className="text-center">
-                    <h2 className="text-4xl font-bold">
+                    <h2 className="text-3xl font-bold sm:text-4xl">
                         Featured Gear
                     </h2>
 
-                    <p className="mt-4 text-gray-600">
+                    <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-600 sm:text-base">
                         Browse our most popular rental equipment.
                     </p>
                 </div>
 
-                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {gears.map((gear: Gear) => (
                         <GearCard
                             key={gear.id}

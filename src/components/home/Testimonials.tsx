@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Container from "../layout/Container";
 import { Star } from "lucide-react";
 
@@ -30,25 +31,28 @@ const testimonials = [
 
 export default function Testimonials() {
     return (
-        <section className="py-20 bg-white">
+        <section className="bg-white py-14 sm:py-16 lg:py-20">
             <Container>
-                <div className="text-center">
-                    <h2 className="text-4xl font-bold">
+                {/* Section Header */}
+                <div className="mx-auto max-w-2xl text-center">
+                    <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
                         What Our Customers Say
                     </h2>
 
-                    <p className="mt-4 text-gray-600">
+                    <p className="mt-4 text-sm leading-7 text-gray-600 sm:text-base">
                         Trusted by sports lovers across the country.
                     </p>
                 </div>
 
-                <div className="mt-12 grid gap-8 md:grid-cols-3">
+                {/* Testimonials */}
+                <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {testimonials.map((item) => (
                         <div
                             key={item.id}
-                            className="rounded-2xl border bg-white p-6 shadow-sm transition hover:shadow-lg"
+                            className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                         >
-                            <div className="mb-4 flex">
+                            {/* Rating */}
+                            <div className="mb-4 flex gap-1">
                                 {Array.from({ length: 5 }).map((_, index) => (
                                     <Star
                                         key={index}
@@ -58,19 +62,23 @@ export default function Testimonials() {
                                 ))}
                             </div>
 
-                            <p className="text-gray-600 italic">
+                            {/* Review */}
+                            <p className="min-h-[110px] text-sm italic leading-7 text-gray-600 sm:text-base">
                                 "{item.review}"
                             </p>
 
+                            {/* User */}
                             <div className="mt-6 flex items-center gap-4">
-                                <img
+                                <Image
                                     src={item.image}
                                     alt={item.name}
-                                    className="h-14 w-14 rounded-full object-cover"
+                                    width={56}
+                                    height={56}
+                                    className="rounded-full object-cover"
                                 />
 
                                 <div>
-                                    <h4 className="font-semibold">
+                                    <h4 className="font-semibold text-gray-900">
                                         {item.name}
                                     </h4>
 
