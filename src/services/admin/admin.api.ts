@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
 
 export const getDashboardStats = async () => {
-  const { data } = await api.get("/admin/stats");
+  const { data } = await api.get("/dashboard/admin");
   return data.data;
 };
 
@@ -12,12 +12,18 @@ export const getAllUsers = async () => {
 
 export const updateUserStatus = async (
   id: string,
-  status: "ACTIVE" | "BLOCKED",
+  status: "ACTIVE" | "SUSPENDED",
 ) => {
-  const { data } = await api.patch(`/admin/users/${id}`, { status });
+  const { data } = await api.patch(`/users/${id}/status`, {
+    status,
+  });
+
   return data.data;
 };
-
+export const getRecentRentals = async () => {
+  const { data } = await api.get("/dashboard/admin/recent-rentals");
+  return data.data;
+};
 export const getAllGear = async () => {
   const { data } = await api.get("/admin/gear");
   return data.data;
