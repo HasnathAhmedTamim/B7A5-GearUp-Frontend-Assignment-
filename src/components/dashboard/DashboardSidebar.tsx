@@ -139,21 +139,15 @@ export default function DashboardSidebar({
 
 
     const handleLogout = async () => {
-
         try {
-
             setLoggingOut(true);
 
             await logout();
 
-            router.push("/");
-
+            window.location.href = "/";
         } finally {
-
             setLoggingOut(false);
-
         }
-
     };
 
 
