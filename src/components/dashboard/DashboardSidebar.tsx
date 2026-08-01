@@ -249,7 +249,7 @@ export default function DashboardSidebar({
 
 
                     </div>
-
+                    
 
 
                     <div className="mt-6 flex items-center gap-3">
@@ -302,7 +302,46 @@ export default function DashboardSidebar({
 
 
                 </div>
+                <div className="border-t p-4">
 
+
+                    <button
+
+                        onClick={handleLogout}
+
+                        disabled={loggingOut}
+
+                        className="
+                            flex
+                            w-full
+                            items-center
+                            justify-center
+                            gap-2
+                            rounded-xl
+                            bg-red-500
+                            px-4
+                            py-3
+                            text-white
+                            hover:bg-red-600
+                            disabled:opacity-60
+                        "
+
+                    >
+
+                        <LogOut size={18} />
+
+
+                        {
+                            loggingOut
+                                ? "Logging out..."
+                                : "Logout"
+                        }
+
+
+                    </button>
+
+
+                </div>
 
 
 
@@ -375,7 +414,7 @@ export default function DashboardSidebar({
                 {/* Logout */}
 
 
-                <div className="border-t p-4">
+                {/* <div className="border-t p-4">
 
 
                     <button
@@ -414,7 +453,7 @@ export default function DashboardSidebar({
                     </button>
 
 
-                </div>
+                </div> */}
 
 
             </aside>
