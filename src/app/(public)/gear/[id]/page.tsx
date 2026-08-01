@@ -8,7 +8,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Container from "@/components/layout/Container";
 import RentalForm from "@/components/forms/RentalForm";
-
+import GearReviews from "@/components/gear/GearReviews";
 import { getSingleGear } from "@/services/gear/gear.api";
 
 export default function GearDetailsPage() {
@@ -221,6 +221,12 @@ export default function GearDetailsPage() {
                             pricePerDay={Number(gear.pricePerDay)}
                             stock={gear.stock}
                         />
+                    </div>
+
+                    {/* Reviews */}
+
+                    <div className="mt-16">
+                        <GearReviews gearId={gear.id} />
                     </div>
 
                 </Container>

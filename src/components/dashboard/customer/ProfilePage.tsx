@@ -190,10 +190,12 @@ export default function ProfilePage() {
 
 
     const avatar =
-        user.profile?.photo ||
-        `https://ui-avatars.com/api/?background=2563eb&color=fff&size=200&name=${encodeURIComponent(
-            user.name
-        )}`;
+        !user.profile?.photo ||
+            user.profile.photo.includes("/example/")
+            ? `https://ui-avatars.com/api/?background=2563eb&color=fff&size=200&name=${encodeURIComponent(
+                user.name
+            )}`
+            : user.profile.photo;
 
 
 

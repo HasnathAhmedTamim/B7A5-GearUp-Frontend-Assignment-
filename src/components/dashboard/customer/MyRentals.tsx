@@ -1,136 +1,54 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 
 import {
     getMyRentals,
 } from "@/services/rental/rental.api";
 
 import PaymentButton from "@/components/dashboard/customer/PaymentButton";
-
-
+import ReviewButton from "@/components/dashboard/customer/ReviewButton";
 
 export default function MyRentals() {
-
 
     const {
         data: rentals = [],
         isLoading,
         isError,
-
     } = useQuery({
-
-        queryKey: [
-            "my-rentals"
-        ],
-
+        queryKey: ["my-rentals"],
         queryFn: getMyRentals,
-
     });
 
-
-
-
-
-
-
     if (isLoading) {
-
         return (
-
-            <div className="
-                flex
-                h-80
-                items-center
-                justify-center
-                text-gray-500
-            ">
-
+            <div className="flex h-80 items-center justify-center text-gray-500">
                 Loading...
-
             </div>
-
         );
-
     }
-
-
-
-
-
 
     if (isError) {
-
         return (
-
-            <div className="
-                flex
-                h-80
-                items-center
-                justify-center
-                text-red-500
-            ">
-
+            <div className="flex h-80 items-center justify-center text-red-500">
                 Something went wrong.
-
             </div>
-
         );
-
     }
-
-
-
-
-
-
 
     if (!rentals.length) {
-
         return (
-
-            <div className="
-                rounded-xl
-                border
-                bg-white
-                p-10
-                text-center
-                shadow-sm
-            ">
-
-                <h2 className="
-                    text-2xl
-                    font-semibold
-                ">
-
+            <div className="rounded-xl border bg-white p-10 text-center shadow-sm">
+                <h2 className="text-2xl font-semibold">
                     No Rentals Found
-
                 </h2>
 
-
-                <p className="
-                    mt-2
-                    text-gray-500
-                ">
-
-                    You haven't rented any gear yet.
-
+                <p className="mt-2 text-gray-500">
+                    You haven&apost rented any gear yet.
                 </p>
-
-
             </div>
-
         );
-
     }
-
-
-
-
-
-
-
 
     return (
 
@@ -162,254 +80,120 @@ export default function MyRentals() {
 
             {/* Desktop Table */}
 
-
-
-            <div className="
-                hidden
-                overflow-hidden
-                rounded-xl
-                border
-                bg-white
-                shadow-sm
-                xl:block
-            ">
-
+            <div className="hidden overflow-hidden rounded-xl border bg-white shadow-sm xl:block">
 
                 <table className="w-full">
-
 
                     <thead className="bg-gray-100">
 
                         <tr>
 
-
                             <th className="px-6 py-4 text-left">
                                 Gear
                             </th>
-
 
                             <th className="px-6 py-4 text-left">
                                 Rental Period
                             </th>
 
-
                             <th className="px-6 py-4 text-center">
                                 Qty
                             </th>
-
 
                             <th className="px-6 py-4 text-center">
                                 Total
                             </th>
 
-
                             <th className="px-6 py-4 text-center">
                                 Status
                             </th>
-
 
                             <th className="px-6 py-4 text-center">
                                 Payment
                             </th>
 
+                            <th className="px-6 py-4 text-center">
+                                Review
+                            </th>
 
                         </tr>
 
-
                     </thead>
-
-
-
-
 
                     <tbody>
 
+                        {rentals.map((r: any) => (
 
-                        {
-                            rentals.map((r: any) => (
+                            <tr
+                                key={r.id}
+                                className="border-t hover:bg-gray-50"
+                            >
 
+                                <td className="px-6 py-4">
 
-                                <tr
+                                    <div className="flex items-center gap-4">
 
-                                    key={r.id}
+                                        <img
+                                            src={r.gear.image}
+                                            alt={r.gear.title}
+                                            className="h-16 w-16 rounded-lg object-cover"
+                                        />
 
-                                    className="
-                                    border-t
-                                    hover:bg-gray-50
-                                "
+                                        <div>
 
-                                >
+                                            <h3 className="font-semibold">
+                                                {r.gear.title}
+                                            </h3>
 
-
-
-                                    <td className="px-6 py-4">
-
-
-                                        <div className="
-                                        flex
-                                        items-center
-                                        gap-4
-                                    ">
-
-
-                                            <img 
-
-                                                src={r.gear.image}
-
-                                                alt={r.gear.title}
-
-                                                className="
-                                                h-16
-                                                w-16
-                                                rounded-lg
-                                                object-cover
-                                            "
-
-                                            />
-
-
-                                            <div>
-
-
-                                                <h3 className="font-semibold">
-
-                                                    {r.gear.title}
-
-                                                </h3>
-
-
-                                                <p className="
-                                                text-sm
-                                                text-gray-500
-                                            ">
-
-                                                    {r.gear.category.name}
-
-                                                </p>
-
-
-                                            </div>
-
+                                            <p className="text-sm text-gray-500">
+                                                {r.gear.category.name}
+                                            </p>
 
                                         </div>
 
+                                    </div>
 
-                                    </td>
+                                </td>
 
+                                <td className="px-6 py-4">
 
+                                    <p>
+                                        {new Date(r.startDate).toLocaleDateString()}
+                                    </p>
 
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(r.endDate).toLocaleDateString()}
+                                    </p>
 
+                                </td>
 
+                                <td className="px-6 py-4 text-center">
+                                    {r.quantity}
+                                </td>
 
+                                <td className="px-6 py-4 text-center font-semibold">
+                                    ৳ {r.totalAmount}
+                                </td>
 
-                                    <td className="px-6 py-4">
+                                <td className="px-6 py-4 text-center">
+                                    <StatusBadge status={r.status} />
+                                </td>
 
-                                        <p>
-                                            {
-                                                new Date(
-                                                    r.startDate
-                                                )
-                                                    .toLocaleDateString()
-                                            }
-                                        </p>
+                                <td className="px-6 py-4 text-center">
+                                    <PaymentButton rental={r} />
+                                </td>
 
+                                <td className="px-6 py-4 text-center">
+                                    <ReviewButton rental={r} />
+                                </td>
 
-                                        <p className="
-                                        text-sm
-                                        text-gray-500
-                                    ">
+                            </tr>
 
-                                            {
-                                                new Date(
-                                                    r.endDate
-                                                )
-                                                    .toLocaleDateString()
-                                            }
-
-                                        </p>
-
-
-                                    </td>
-
-
-
-
-
-
-
-                                    <td className="
-                                    px-6
-                                    py-4
-                                    text-center
-                                ">
-
-                                        {r.quantity}
-
-                                    </td>
-
-
-
-
-
-
-
-                                    <td className="
-                                    px-6
-                                    py-4
-                                    text-center
-                                    font-semibold
-                                ">
-
-                                        ৳ {r.totalAmount}
-
-                                    </td>
-
-
-
-
-
-
-
-                                    <td className="px-6 py-4 text-center">
-
-                                        <StatusBadge
-                                            status={r.status}
-                                        />
-
-                                    </td>
-
-
-
-
-
-
-
-                                    <td className="px-6 py-4 text-center">
-
-                                        <PaymentButton
-                                            rental={r}
-                                        />
-
-                                    </td>
-
-
-
-
-
-                                </tr>
-
-
-                            ))
-                        }
-
+                        ))}
 
                     </tbody>
 
-
-
                 </table>
-
-
 
             </div>
 
@@ -463,7 +247,7 @@ export default function MyRentals() {
                         ">
 
 
-                                <img 
+                                <img
 
                                     src={r.gear.image}
 
@@ -586,9 +370,12 @@ export default function MyRentals() {
 
 
 
-                            <div className="mt-5">
+                            <div className="mt-5 flex flex-col gap-3">
 
                                 <PaymentButton
+                                    rental={r}
+                                />
+                                <ReviewButton
                                     rental={r}
                                 />
 
@@ -668,55 +455,41 @@ function Info({
 
 function StatusBadge({
     status,
-
 }: {
     status: string;
-
 }) {
 
-
     const style =
-        status === "PAID"
-            ?
-            "bg-green-100 text-green-700"
+        status === "PLACED"
+            ? "bg-yellow-100 text-yellow-700"
 
-            :
+            : status === "CONFIRMED"
+                ? "bg-blue-100 text-blue-700"
 
-            status === "CONFIRMED"
-                ?
-                "bg-blue-100 text-blue-700"
+                : status === "PAID"
+                    ? "bg-green-100 text-green-700"
 
-                :
+                    : status === "PICKED_UP"
+                        ? "bg-purple-100 text-purple-700"
 
-                status === "PLACED"
-                    ?
-                    "bg-yellow-100 text-yellow-700"
+                        : status === "RETURNED"
+                            ? "bg-emerald-100 text-emerald-700"
 
-                    :
-
-                    status === "PICKED_UP"
-                        ?
-                        "bg-purple-100 text-purple-700"
-
-                        :
-
-                        "bg-gray-100 text-gray-700";
-
-
+                            : "bg-red-100 text-red-700";
 
     return (
 
-        <span className={`
-            rounded-full
-            px-3
-            py-1
-            text-xs
-            font-semibold
-            ${style}
-        `}>
-
+        <span
+            className={`
+                rounded-full
+                px-3
+                py-1
+                text-xs
+                font-semibold
+                ${style}
+            `}
+        >
             {status}
-
         </span>
 
     );
