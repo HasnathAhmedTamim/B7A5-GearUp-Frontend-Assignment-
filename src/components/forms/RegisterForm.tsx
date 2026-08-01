@@ -33,8 +33,8 @@ export default function RegisterForm() {
         mutationFn: registerUser,
 
         onSuccess: (res) => {
-            toast.success(res.message || "Registration successful");
-            router.push("/");
+            toast.success(res.message || "Registration successful. Please login.");
+            router.push("/login");
         },
 
         onError: (error) => {
