@@ -15,12 +15,13 @@ export default function Navbar() {
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    const { user, loading, logout } = useAuthContext();
+    const { user,  logout } = useAuthContext();
 
     const handleLogout = async () => {
         await logout();
         setMobileOpen(false);
         router.push("/");
+        router.refresh();
     };
 
     const closeMenu = () => setMobileOpen(false);
@@ -40,22 +41,22 @@ export default function Navbar() {
         },
     ];
 
-    if (loading) {
-        return (
-            <header className="sticky top-0 z-50 border-b bg-white">
-                <Container>
-                    <div className="flex h-16 items-center justify-between">
-                        <Link
-                            href="/"
-                            className="text-2xl font-bold text-blue-600"
-                        >
-                            GearUp
-                        </Link>
-                    </div>
-                </Container>
-            </header>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <header className="sticky top-0 z-50 border-b bg-white">
+    //             <Container>
+    //                 <div className="flex h-16 items-center justify-between">
+    //                     <Link
+    //                         href="/"
+    //                         className="text-2xl font-bold text-blue-600"
+    //                     >
+    //                         GearUp
+    //                     </Link>
+    //                 </div>
+    //             </Container>
+    //         </header>
+    //     );
+    // }
 
     return (
         <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
