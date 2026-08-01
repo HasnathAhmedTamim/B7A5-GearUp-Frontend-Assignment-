@@ -22,11 +22,8 @@ https://github.com/HasnathAhmedTamim/B7A5-GearUp-Frontend-Assignment-
 
 ### 🖥 Backend Repository
 
-> Add your backend repository link here
+> https://github.com/HasnathAhmedTamim/B7A4-GearUp-Backend-Assignment
 
-### 🎥 Demo Video
-
-> Add your demo video link here
 
 ---
 

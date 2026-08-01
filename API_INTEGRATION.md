@@ -1,42 +1,43 @@
-# API Integration Documentation
+# 🔌 API Integration Documentation
 
-This document describes how the GearUp frontend consumes the backend REST API.
+This document describes how the **GearUp Frontend** communicates with the backend REST API.
 
 ---
 
-# Backend API
+# 🌐 Backend API
 
-Base URL
+**Base URL**
 
-```
+```text
 https://b7a4-gearup-backend-assignment.onrender.com/api
 ```
 
 ---
 
-# Authentication
+# 🔐 Authentication
 
 ## Login
 
-Frontend
+**Frontend**
 
-```
+```text
 /login
 ```
 
-Backend
+**Backend**
 
-```
+```http
 POST /auth/login
 ```
 
-Purpose
+### Purpose
 
 - Authenticate user
-- Store HTTP Only Access Token
-- Store HTTP Only Refresh Token
+- Store HTTP-only Access Token
+- Store HTTP-only Refresh Token
+- Redirect user based on authentication state
 
-Used In
+### Used In
 
 - Login Form
 
@@ -44,90 +45,83 @@ Used In
 
 ## Register
 
-Frontend
+**Frontend**
 
-```
+```text
 /register
 ```
 
-Backend
+**Backend**
 
-```
+```http
 POST /users/register
 ```
 
-Purpose
+### Purpose
 
-- Create new Customer
-- Create new Provider
-- Create new Admin (Seed)
+- Register a new user (Customer or Provider)
 
-Used In
+### Used In
 
 - Registration Form
 
 ---
 
-## Current User
+## Get Current User
 
-Backend
+**Backend**
 
-```
+```http
 GET /auth/me
 ```
 
-Purpose
+### Purpose
 
-- Retrieve logged in user
-- Restore authentication after refresh
+- Restore user session
+- Retrieve authenticated user information
 - Determine user role
 
-Used In
+### Used In
 
 - AuthProvider
 - Navbar
 - Dashboard
-- Protected Routes
+- Protected Pages
 - Profile
 
 ---
 
 ## Logout
 
-Backend
+**Backend**
 
-```
+```http
 POST /auth/logout
 ```
 
-Purpose
+### Purpose
 
 - Clear authentication cookies
+- End current session
 
-Used In
+### Used In
 
-- Navbar Logout
-- Dashboard Logout
+- Navbar
+- Dashboard Sidebar
 
 ---
 
-# Categories
+# 📂 Categories
 
-## Get Categories
+## Get All Categories
 
-Backend
-
-```
+```http
 GET /categories
 ```
 
-Purpose
-
-- Load category list
-
 Used In
 
-- Gear Page Filters
+- Gear Filters
 - Add Gear Form
 - Edit Gear Form
 
@@ -135,9 +129,7 @@ Used In
 
 ## Create Category
 
-Backend
-
-```
+```http
 POST /categories
 ```
 
@@ -149,9 +141,7 @@ Used In
 
 ## Update Category
 
-Backend
-
-```
+```http
 PATCH /categories/:id
 ```
 
@@ -163,9 +153,7 @@ Used In
 
 ## Delete Category
 
-Backend
-
-```
+```http
 DELETE /categories/:id
 ```
 
@@ -175,42 +163,36 @@ Used In
 
 ---
 
-# Gear
+# 🏕️ Gear
 
 ## Get All Gear
 
-Backend
-
-```
+```http
 GET /gear
 ```
 
 Used In
 
-- Home Page
 - Gear Listing
+- Browse Gear
 
 ---
 
-## Featured Gear
+## Get Featured Gear
 
-Backend
-
-```
+```http
 GET /gear/featured
 ```
 
 Used In
 
-- Homepage Featured Section
+- Home Page
 
 ---
 
-## Gear Details
+## Get Single Gear
 
-Backend
-
-```
+```http
 GET /gear/:id
 ```
 
@@ -220,11 +202,9 @@ Used In
 
 ---
 
-## Provider Gear
+## Get Provider Gear
 
-Backend
-
-```
+```http
 GET /gear/my-gear
 ```
 
@@ -236,9 +216,7 @@ Used In
 
 ## Create Gear
 
-Backend
-
-```
+```http
 POST /gear
 ```
 
@@ -250,9 +228,7 @@ Used In
 
 ## Update Gear
 
-Backend
-
-```
+```http
 PATCH /gear/:id
 ```
 
@@ -264,39 +240,33 @@ Used In
 
 ## Delete Gear
 
-Backend
-
-```
+```http
 DELETE /gear/:id
 ```
 
 Used In
 
-- My Gear Table
+- Provider Dashboard
 
 ---
 
-# Rentals
+# 📅 Rentals
 
 ## Create Rental
 
-Backend
-
-```
+```http
 POST /rentals
 ```
 
 Used In
 
-- Rent Now Form
+- Rental Form
 
 ---
 
-## Customer Rentals
+## Get Customer Rentals
 
-Backend
-
-```
+```http
 GET /rentals/my-rentals
 ```
 
@@ -306,25 +276,21 @@ Used In
 
 ---
 
-## Provider Orders
+## Get Provider Rental Orders
 
-Backend
-
-```
+```http
 GET /rentals/provider
 ```
 
 Used In
 
-- Provider Orders
+- Provider Dashboard
 
 ---
 
 ## Update Rental Status
 
-Backend
-
-```
+```http
 PATCH /rentals/:id/status
 ```
 
@@ -334,11 +300,9 @@ Used In
 
 ---
 
-## Admin Rentals
+## Get All Rentals
 
-Backend
-
-```
+```http
 GET /admin/rentals
 ```
 
@@ -348,45 +312,39 @@ Used In
 
 ---
 
-# Payments
+# 💳 Payments
 
-## Create Stripe Checkout Session
+## Create Checkout Session
 
-Backend
-
-```
+```http
 POST /payments/create
 ```
 
-Purpose
+### Purpose
 
-- Redirect customer to Stripe Checkout
+- Create Stripe Checkout Session
 
 Used In
 
-- Payment Button
+- Customer Payment
 
 ---
 
 ## Get Payment History
 
-Backend
-
-```
+```http
 GET /payments
 ```
 
 Used In
 
-- Customer Payment History
+- Customer Dashboard
 
 ---
 
-## Get Single Payment
+## Get Payment Details
 
-Backend
-
-```
+```http
 GET /payments/:id
 ```
 
@@ -398,28 +356,29 @@ Used In
 
 ## Stripe Webhook
 
-Backend
-
-```
+```http
 POST /payments/webhook
 ```
 
-Purpose
+### Purpose
 
+- Verify Stripe payment
 - Update payment status
-- Update rental status after successful payment
+- Update rental status automatically
 
 ---
 
-# Reviews
+# ⭐ Reviews
 
 ## Create Review
 
-Backend
-
-```
+```http
 POST /reviews
 ```
+
+### Purpose
+
+- Submit a review for a completed rental
 
 Used In
 
@@ -427,13 +386,15 @@ Used In
 
 ---
 
-## Get Reviews
+## Get Gear Reviews
 
-Backend
+```http
+GET /reviews?gearId=:gearId
+```
 
-```
-GET /reviews
-```
+### Purpose
+
+- Retrieve reviews for a specific gear
 
 Used In
 
@@ -441,13 +402,11 @@ Used In
 
 ---
 
-# Dashboard
+# 📊 Dashboard
 
 ## Provider Dashboard
 
-Backend
-
-```
+```http
 GET /dashboard/provider
 ```
 
@@ -459,26 +418,23 @@ Used In
 
 ## Admin Dashboard
 
-Backend
-
-```
+```http
 GET /admin/dashboard
 ```
 
 Used In
 
-- Admin Statistics
+- Dashboard Statistics
 - Recent Rentals
+- Revenue Overview
 
 ---
 
-# Admin
+# 👑 Admin
 
-## Get Users
+## Get All Users
 
-Backend
-
-```
+```http
 GET /admin/users
 ```
 
@@ -490,9 +446,7 @@ Used In
 
 ## Update User Status
 
-Backend
-
-```
+```http
 PATCH /admin/users/:id/status
 ```
 
@@ -503,40 +457,43 @@ Used In
 
 ---
 
-## Dashboard Statistics
+# ⚠️ Error Handling
 
-Backend
-
-```
-GET /admin/dashboard
-```
-
-Used In
-
-- Admin Dashboard Cards
-
----
-
-# Error Handling
-
-The frontend provides consistent error handling using:
+The frontend provides a consistent user experience using:
 
 - Sonner Toast Notifications
-- React Query Error States
-- Form Validation using React Hook Form + Zod
+- TanStack Query Error States
+- React Hook Form Validation
+- Zod Schema Validation
 - Loading Skeleton Components
 - Empty State Components
+- Axios Error Handling
 
 ---
 
-# Technologies Used
+# 🛠️ Frontend Technologies
 
-- Next.js (App Router)
+- Next.js 16 (App Router)
+- React 19
 - TypeScript
 - TanStack Query
 - React Hook Form
 - Zod
 - Tailwind CSS
+- shadcn/ui
+- Lucide React
+- Sonner
+- Axios
+
+---
+
+# ⚙️ Backend Technologies
+
+- Node.js
+- Express.js
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- JWT Authentication
+- HTTP-only Cookie Authentication
 - Stripe Checkout
-- HTTP Only Cookie Authentication
-- REST API
