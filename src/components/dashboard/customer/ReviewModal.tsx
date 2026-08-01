@@ -42,7 +42,7 @@ export default function ReviewModal({
         formState: { errors },
         reset,
     } = useForm<ReviewFormData>({
-        resolver: zodResolver(reviewSchema),
+       resolver: zodResolver(reviewSchema) as any,
         defaultValues: {
             gearId,
             rating: 0,
