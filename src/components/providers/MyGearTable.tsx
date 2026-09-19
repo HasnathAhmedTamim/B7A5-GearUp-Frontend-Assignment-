@@ -100,7 +100,7 @@ export default function MyGearTable() {
             <div className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-8
                 text-center
             ">
@@ -119,7 +119,7 @@ export default function MyGearTable() {
             <div className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-8
                 text-center
                 text-red-500
@@ -141,7 +141,7 @@ export default function MyGearTable() {
             <div className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-10
                 text-center
             ">
@@ -151,7 +151,7 @@ export default function MyGearTable() {
                 </h2>
 
 
-                <p className="mt-2 text-gray-500">
+                <p className="mt-2 text-muted-foreground">
                     Add your first gear to get started.
                 </p>
 
@@ -182,7 +182,7 @@ export default function MyGearTable() {
                     overflow-hidden
                     rounded-xl
                     border
-                    bg-white
+                    bg-card
                     shadow
                     xl:block
                 "
@@ -192,7 +192,7 @@ export default function MyGearTable() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-100">
+                    <thead className="bg-muted">
 
 
                         <tr>
@@ -258,7 +258,7 @@ export default function MyGearTable() {
                                     key={gear.id}
                                     className="
                                     border-t
-                                    hover:bg-gray-50
+                                    hover:bg-muted/40
                                 "
                                 >
 
@@ -376,7 +376,7 @@ export default function MyGearTable() {
                             className="
                             rounded-xl
                             border
-                            bg-white
+                            bg-card
                             p-5
                             shadow-sm
                         "
@@ -411,7 +411,7 @@ export default function MyGearTable() {
                                     </h3>
 
 
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-muted-foreground">
                                         {gear.category?.name}
                                     </p>
 
@@ -453,7 +453,7 @@ export default function MyGearTable() {
 
                                 <div className="flex justify-between">
 
-                                    <span className="text-gray-500">
+                                    <span className="text-muted-foreground">
                                         Status
                                     </span>
 
@@ -520,7 +520,7 @@ function Info({
 
         <div className="flex justify-between">
 
-            <span className="text-gray-500">
+            <span className="text-muted-foreground">
                 {label}
             </span>
 
@@ -607,10 +607,10 @@ function Actions({
                 href={`/dashboard/provider/my-gear/edit/${gear.id}`}
                 className="
                     rounded-lg
-                    bg-blue-500
+                    bg-primary/50
                     p-2
                     text-white
-                    hover:bg-blue-600
+                    hover:bg-primary
                 "
             >
                 <Pencil size={18} />

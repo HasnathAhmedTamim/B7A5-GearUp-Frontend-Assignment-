@@ -8,10 +8,10 @@ import TableSkeleton from "@/components/shared/TableSkeleton";
 
 const statusStyles: Record<string, string> = {
     PLACED: "bg-yellow-100 text-yellow-700",
-    CONFIRMED: "bg-blue-100 text-blue-700",
+    CONFIRMED: "bg-primary/10 text-primary",
     PICKED_UP: "bg-purple-100 text-purple-700",
     PAID: "bg-green-100 text-green-700",
-    RETURNED: "bg-gray-100 text-gray-700",
+    RETURNED: "bg-muted text-foreground/80",
     CANCELLED: "bg-red-100 text-red-700",
 };
 
@@ -56,7 +56,7 @@ export default function AdminRentals() {
                     Rental Management
                 </h1>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                     Manage all rental orders.
                 </p>
 
@@ -70,7 +70,7 @@ export default function AdminRentals() {
                 hidden
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 shadow-sm
                 xl:block
                 overflow-hidden
@@ -79,7 +79,7 @@ export default function AdminRentals() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-100">
+                    <thead className="bg-muted">
 
                         <tr>
 
@@ -128,7 +128,7 @@ export default function AdminRentals() {
 
                             <tr
                                 key={item.id}
-                                className="border-t hover:bg-gray-50"
+                                className="border-t hover:bg-muted/40"
                             >
 
                                 <td className="p-4">
@@ -183,7 +183,7 @@ export default function AdminRentals() {
                                             text-xs
                                             font-semibold
                                             ${statusStyles[item.status] ??
-                                            "bg-gray-100 text-gray-700"}
+                                            "bg-muted text-foreground/80"}
                                         `}
                                     >
                                         {item.status.replace("_", " ")}
@@ -222,7 +222,7 @@ export default function AdminRentals() {
                         className="
                             rounded-xl
                             border
-                            bg-white
+                            bg-card
                             p-4
                             shadow-sm
                         "
@@ -231,7 +231,7 @@ export default function AdminRentals() {
 
                         <div className="flex justify-between gap-4 border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Customer
                             </span>
 
@@ -245,7 +245,7 @@ export default function AdminRentals() {
 
                         <div className="mt-3 flex justify-between gap-4 border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Gear
                             </span>
 
@@ -264,7 +264,7 @@ export default function AdminRentals() {
 
                         <div className="mt-3 flex justify-between gap-4 border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Provider
                             </span>
 
@@ -278,7 +278,7 @@ export default function AdminRentals() {
 
                         <div className="mt-3 flex justify-between border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Quantity
                             </span>
 
@@ -292,7 +292,7 @@ export default function AdminRentals() {
 
                         <div className="mt-3 flex justify-between border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Total
                             </span>
 
@@ -308,7 +308,7 @@ export default function AdminRentals() {
 
                         <div className="mt-3 flex justify-between">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Status
                             </span>
 
@@ -321,7 +321,7 @@ export default function AdminRentals() {
                                     text-xs
                                     font-semibold
                                     ${statusStyles[item.status] ??
-                                    "bg-gray-100 text-gray-700"}
+                                    "bg-muted text-foreground/80"}
                                 `}
                             >
                                 {item.status.replace("_", " ")}
@@ -343,10 +343,10 @@ export default function AdminRentals() {
                     <div className="
                         rounded-xl
                         border
-                        bg-white
+                        bg-card
                         p-8
                         text-center
-                        text-gray-500
+                        text-muted-foreground
                     ">
                         No rentals found.
                     </div>

@@ -151,7 +151,7 @@ export default function EditProfileModal({
                     w-full
                     max-w-lg
                     rounded-xl
-                    bg-white
+                    bg-card
                     shadow-xl
                 "
 
@@ -206,7 +206,7 @@ export default function EditProfileModal({
                             className="
                                 rounded-lg
                                 p-2
-                                hover:bg-gray-100
+                                hover:bg-muted
                             "
 
                         >

@@ -1,891 +1,157 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import {
-    CreditCard,
-    CalendarDays,
-} from "lucide-react";
-
-import {
-    getMyPayments,
-} from "@/services/payment/payment.api";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { CalendarDays, CreditCard } from "lucide-react";
 
+import EmptyState from "@/components/shared/EmptyState";
+import { QueryErrorState } from "@/components/shared/QueryState";
+import SectionHeader from "@/components/shared/SectionHeader";
+import StatusBadge from "@/components/shared/StatusBadge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getMyPayments } from "@/services/payment/payment.api";
 
-
+type PaymentItem = {
+    id: string;
+    amount: number;
+    provider?: string;
+    transactionId?: string;
+    paidAt?: string | null;
+    status: string;
+    rentalOrder?: {
+        gear?: {
+            title?: string;
+            image?: string;
+        };
+    };
+};
 
 export default function PaymentList() {
-
-
     const {
         data: payments = [],
         isLoading,
         isError,
-
-    } = useQuery({
-
-        queryKey: [
-            "my-payments"
-        ],
-
+        refetch,
+    } = useQuery<PaymentItem[]>({
+        queryKey: ["my-payments"],
         queryFn: getMyPayments,
-
     });
 
-
-
-
-
-
-
     if (isLoading) {
-
         return (
-
-            <div className="
-                flex
-                h-80
-                items-center
-                justify-center
-                text-gray-500
-            ">
-
-                Loading payments...
-
+            <div className="space-y-4">
+                <Skeleton className="h-16 w-72" />
+                <Skeleton className="h-64 rounded-2xl" />
             </div>
-
         );
-
     }
-
-
-
-
-
-
-
 
     if (isError) {
-
         return (
-
-            <div className="
-                flex
-                h-80
-                items-center
-                justify-center
-                text-red-500
-            ">
-
-                Failed to load payments.
-
-            </div>
-
+            <QueryErrorState
+                title="Failed to load payments"
+                description="Your payment history could not be retrieved."
+                onRetry={() => refetch()}
+            />
         );
-
     }
-
-
-
-
-
-
-
 
     if (!payments.length) {
-
         return (
-
-            <div className="
-                rounded-xl
-                border
-                bg-white
-                p-10
-                text-center
-                shadow-sm
-            ">
-
-
-                <h2 className="
-                    text-2xl
-                    font-semibold
-                ">
-
-                    No Payments Found
-
-                </h2>
-
-
-
-                <p className="
-                    mt-2
-                    text-gray-500
-                ">
-
-                    Your payment history will appear here.
-
-                </p>
-
-
+            <div className="space-y-6">
+                <SectionHeader
+                    eyebrow="Billing"
+                    title="Payments"
+                    description="Checkout history for confirmed rentals appears here."
+                />
+                <EmptyState
+                    icon={CreditCard}
+                    title="No payments yet"
+                    description="Once you complete Stripe checkout, receipts will show in this list."
+                />
             </div>
-
         );
-
     }
 
-
-
-
-
-
-
-
     return (
-
         <div className="space-y-6">
+            <SectionHeader
+                eyebrow="Billing"
+                title="Payments"
+                description="Review amounts, providers, and transaction status."
+            />
 
-
-
-
-
-
-            {/* Header */}
-
-
-            <div>
-
-
-                <h1 className="
-                    text-2xl
-                    font-bold
-                    sm:text-3xl
-                ">
-
-                    Payments
-
-                </h1>
-
-
-
-                <p className="
-                    mt-1
-                    text-sm
-                    text-gray-500
-                ">
-
-                    View your payment history.
-
-                </p>
-
-
-
-            </div>
-
-
-
-
-
-
-
-
-
-            {/* Desktop Table */}
-
-
-            <div className="
-                hidden
-                overflow-hidden
-                rounded-xl
-                border
-                bg-white
-                shadow-sm
-                xl:block
-            ">
-
-
-
-                <table className="w-full">
-
-
-                    <thead className="bg-gray-100">
-
-
+            <div className="hidden overflow-hidden rounded-2xl border bg-card xl:block">
+                <table className="w-full text-sm">
+                    <thead className="bg-muted/60 text-left text-muted-foreground">
                         <tr>
-
-
-                            <th className="p-4 text-left">
-                                Gear
-                            </th>
-
-
-                            <th className="p-4 text-left">
-                                Amount
-                            </th>
-
-
-                            <th className="p-4 text-left">
-                                Provider
-                            </th>
-
-
-                            <th className="p-4 text-left">
-                                Transaction ID
-                            </th>
-
-
-                            <th className="p-4 text-left">
-                                Date
-                            </th>
-
-
-                            <th className="p-4 text-left">
-                                Status
-                            </th>
-
-
+                            <th className="p-4 font-medium">Gear</th>
+                            <th className="p-4 font-medium">Amount</th>
+                            <th className="p-4 font-medium">Provider</th>
+                            <th className="p-4 font-medium">Transaction</th>
+                            <th className="p-4 font-medium">Date</th>
+                            <th className="p-4 font-medium">Status</th>
                         </tr>
-
-
                     </thead>
-
-
-
-
-
-
                     <tbody>
-
-
-                        {
-                            payments.map(
-                                (payment: any) => (
-
-
-                                    <tr
-
-                                        key={payment.id}
-
-                                        className="
-                                        border-t
-                                        hover:bg-gray-50
-                                    "
-
-                                    >
-
-
-
-
-                                        <td className="p-4">
-
-
-                                            <div className="
-                                            flex
-                                            items-center
-                                            gap-3
-                                        ">
-
-
-                                                <img
-
-                                                    src={
-                                                        payment
-                                                            .rentalOrder
-                                                            ?.gear
-                                                            ?.image
-                                                    }
-
-                                                    alt="gear"
-
-                                                    className="
-                                                    h-14
-                                                    w-14
-                                                    rounded-lg
-                                                    object-cover
-                                                "
-
+                        {payments.map((payment) => (
+                            <tr key={payment.id} className="border-t">
+                                <td className="p-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-muted">
+                                            {payment.rentalOrder?.gear?.image && (
+                                                <Image
+                                                    src={payment.rentalOrder.gear.image}
+                                                    alt={`${payment.rentalOrder.gear.title ?? "Gear"} payment photo`}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="48px"
                                                 />
-
-
-
-                                                <div>
-
-
-                                                    <p className="
-                                                    font-semibold
-                                                ">
-
-                                                        {
-                                                            payment
-                                                                .rentalOrder
-                                                                ?.gear
-                                                                ?.title
-                                                        }
-
-
-                                                    </p>
-
-
-                                                    <p className="
-                                                    text-sm
-                                                    text-gray-500
-                                                ">
-
-                                                        Rental Payment
-
-                                                    </p>
-
-
-                                                </div>
-
-
-
-                                            </div>
-
-
-                                        </td>
-
-
-
-
-
-
-                                        <td className="
-                                        p-4
-                                        font-semibold
-                                    ">
-
-
-                                            ৳ {
-                                                Number(
-                                                    payment.amount
-                                                ).toFixed(2)
-                                            }
-
-
-                                        </td>
-
-
-
-
-
-
-
-                                        <td className="p-4">
-
-
-                                            <div className="
-                                            flex
-                                            items-center
-                                            gap-2
-                                        ">
-
-
-                                                <CreditCard size={16} />
-
-
-                                                {
-                                                    payment.provider
-                                                }
-
-
-                                            </div>
-
-
-                                        </td>
-
-
-
-
-
-
-
-                                        <td className="
-                                        max-w-[180px]
-                                        break-all
-                                        p-4
-                                        text-sm
-                                    ">
-
-
-                                            {
-                                                payment.transactionId || "-"
-                                            }
-
-
-                                        </td>
-
-
-
-
-
-
-
-                                        <td className="p-4">
-
-
-                                            <div className="
-                                            flex
-                                            items-center
-                                            gap-2
-                                        ">
-
-
-                                                <CalendarDays size={16} />
-
-
-                                                {
-                                                    payment.paidAt
-
-                                                        ?
-
-                                                        new Date(
-                                                            payment.paidAt
-                                                        )
-                                                            .toLocaleDateString()
-
-                                                        :
-
-                                                        "Not Paid"
-                                                }
-
-
-                                            </div>
-
-
-                                        </td>
-
-
-
-
-
-
-
-
-                                        <td className="p-4">
-
-
-                                            <StatusBadge
-
-                                                status={
-                                                    payment.status
-                                                }
-
-                                            />
-
-
-                                        </td>
-
-
-
-
-
-                                    </tr>
-
-
-                                ))
-                        }
-
-
+                                            )}
+                                        </div>
+                                        <div>
+                                            <p className="font-medium">{payment.rentalOrder?.gear?.title}</p>
+                                            <p className="text-xs text-muted-foreground">Rental payment</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="p-4 font-semibold">৳ {Number(payment.amount).toFixed(2)}</td>
+                                <td className="p-4">{payment.provider}</td>
+                                <td className="max-w-[180px] break-all p-4 text-muted-foreground">{payment.transactionId || "—"}</td>
+                                <td className="p-4">
+                                    <span className="inline-flex items-center gap-2">
+                                        <CalendarDays size={14} />
+                                        {payment.paidAt ? new Date(payment.paidAt).toLocaleDateString() : "Not paid"}
+                                    </span>
+                                </td>
+                                <td className="p-4">
+                                    <StatusBadge status={payment.status} />
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
-
-
-
                 </table>
-
-
             </div>
 
-
-
-
-
-
-
-
-
-            {/* Mobile + Tablet Card */}
-
-
-
-            <div className="
-                grid
-                gap-4
-                xl:hidden
-            ">
-
-
-
-                {
-                    payments.map(
-                        (payment: any) => (
-
-
-                            <div
-
-                                key={payment.id}
-
-                                className="
-                                rounded-xl
-                                border
-                                bg-white
-                                p-4
-                                shadow-sm
-                            "
-
-                            >
-
-
-
-
-
-
-
-                                {/* Gear */}
-
-
-
-                                <div className="
-                                flex
-                                items-start
-                                gap-3
-                                border-b
-                                pb-4
-                            ">
-
-
-                                    <img 
-
-                                        src={
-                                            payment
-                                                .rentalOrder
-                                                ?.gear
-                                                ?.image
-                                        }
-
-                                        alt="gear"
-
-                                        className="
-                                        h-16
-                                        w-16
-                                        shrink-0
-                                        rounded-xl
-                                        object-cover
-                                    "
-
-                                    />
-
-
-
-                                    <div className="
-                                    min-w-0
-                                ">
-
-
-                                        <h3 className="
-                                        break-words
-                                        text-sm
-                                        font-semibold
-                                    ">
-
-                                            {
-                                                payment
-                                                    .rentalOrder
-                                                    ?.gear
-                                                    ?.title
-                                            }
-
-                                        </h3>
-
-
-
-                                        <p className="
-                                        text-xs
-                                        text-gray-500
-                                    ">
-
-                                            Rental Payment
-
-                                        </p>
-
-
-
-                                    </div>
-
-
-
-                                </div>
-
-
-
-
-
-
-
-
-
-                                {/* Info */}
-
-
-
-                                <div className="
-                                mt-4
-                                space-y-3
-                            ">
-
-
-
-                                    <Info
-
-                                        label="Amount"
-
-                                        value={
-                                            `৳ ${Number(
-                                                payment.amount
-                                            ).toFixed(2)}`
-                                        }
-
-                                    />
-
-
-
-
-                                    <Info
-
-                                        label="Provider"
-
-                                        value={
-                                            payment.provider
-                                        }
-
-                                    />
-
-
-
-
-
-                                    <Info
-
-                                        label="Transaction"
-
-                                        value={
-                                            payment.transactionId || "-"
-                                        }
-
-                                    />
-
-
-
-
-
-                                    <Info
-
-                                        label="Date"
-
-                                        value={
-                                            payment.paidAt
-
-                                                ?
-
-                                                new Date(
-                                                    payment.paidAt
-                                                )
-                                                    .toLocaleDateString()
-
-                                                :
-
-                                                "Not Paid"
-                                        }
-
-                                    />
-
-
-
-
-
-
-                                    <div className="
-                                    flex
-                                    items-center
-                                    justify-between
-                                    gap-3
-                                ">
-
-
-                                        <span className="
-                                        text-sm
-                                        text-gray-500
-                                    ">
-
-                                            Status
-
-                                        </span>
-
-
-
-                                        <StatusBadge
-
-                                            status={
-                                                payment.status
-                                            }
-
-                                        />
-
-
-
-                                    </div>
-
-
-
-
-                                </div>
-
-
-
-
-
+            <div className="grid gap-4 xl:hidden">
+                {payments.map((payment) => (
+                    <article key={payment.id} className="rounded-2xl border bg-card p-4">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="truncate font-semibold">{payment.rentalOrder?.gear?.title}</h2>
+                                <p className="mt-1 text-sm text-muted-foreground">{payment.provider}</p>
                             </div>
-
-
-                        ))
-                }
-
-
-
+                            <StatusBadge status={payment.status} />
+                        </div>
+                        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                            <p className="text-muted-foreground">Amount</p>
+                            <p className="text-right font-medium">৳ {Number(payment.amount).toFixed(2)}</p>
+                            <p className="text-muted-foreground">Date</p>
+                            <p className="text-right">{payment.paidAt ? new Date(payment.paidAt).toLocaleDateString() : "Not paid"}</p>
+                        </div>
+                    </article>
+                ))}
             </div>
-
-
-
-
-
-
-
         </div>
-
     );
-
-}
-
-
-
-
-
-
-
-
-
-function Info({
-
-    label,
-
-    value,
-
-}: {
-
-    label: string;
-
-    value: any;
-
-}) {
-
-
-    return (
-
-        <div className="
-            grid
-            grid-cols-2
-            gap-2
-            text-sm
-        ">
-
-
-            <span className="
-                text-gray-500
-            ">
-
-                {label}
-
-            </span>
-
-
-
-            <span className="
-                break-all
-                text-right
-                font-medium
-            ">
-
-                {value}
-
-            </span>
-
-
-
-        </div>
-
-    );
-
-}
-
-
-
-
-
-
-
-
-
-function StatusBadge({
-
-    status,
-
-}: {
-
-    status: string;
-
-}) {
-
-
-    const style =
-
-        status === "COMPLETED"
-
-            ?
-
-            "bg-green-100 text-green-700"
-
-
-            :
-
-            status === "PENDING"
-
-                ?
-
-                "bg-yellow-100 text-yellow-700"
-
-
-                :
-
-                "bg-red-100 text-red-700";
-
-
-
-    return (
-
-        <span className={`
-            inline-flex
-            rounded-full
-            px-3
-            py-1
-            text-xs
-            font-semibold
-            ${style}
-        `}>
-
-            {status}
-
-        </span>
-
-    );
-
 }

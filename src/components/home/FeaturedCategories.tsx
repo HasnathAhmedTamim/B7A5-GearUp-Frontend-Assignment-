@@ -1,87 +1,53 @@
+"use client";
+
+import Link from "next/link";
+import { Bike, Dumbbell, Tent, Waves, Volleyball, Snowflake } from "lucide-react";
+
 import Container from "../layout/Container";
-import {
-    Bike,
-    Dumbbell,
-    Tent,
-    Waves,
-    Volleyball,
-    Snowflake,
-} from "lucide-react";
+import { FadeIn, Stagger, StaggerItem, MotionCard } from "@/components/shared/Motion";
 
 const categories = [
-    {
-        title: "Cycling",
-        icon: Bike,
-        description: "Mountain bikes, road bikes & accessories.",
-    },
-    {
-        title: "Fitness",
-        icon: Dumbbell,
-        description: "Gym equipment for your workout.",
-    },
-    {
-        title: "Camping",
-        icon: Tent,
-        description: "Everything for your outdoor adventure.",
-    },
-    {
-        title: "Water Sports",
-        icon: Waves,
-        description: "Kayaks, surfboards and more.",
-    },
-    {
-        title: "Team Sports",
-        icon: Volleyball,
-        description: "Football, cricket, badminton and more.",
-    },
-    {
-        title: "Winter Sports",
-        icon: Snowflake,
-        description: "Skiing and snowboarding equipment.",
-    },
+    { title: "Cycling", icon: Bike, description: "Mountain bikes, road bikes and accessories." },
+    { title: "Fitness", icon: Dumbbell, description: "Gym equipment for your workout." },
+    { title: "Camping", icon: Tent, description: "Tents, packs and camp essentials." },
+    { title: "Water Sports", icon: Waves, description: "Kayaks, surfboards and more." },
+    { title: "Team Sports", icon: Volleyball, description: "Football, cricket, badminton and more." },
+    { title: "Winter Sports", icon: Snowflake, description: "Skiing and snowboarding equipment." },
 ];
 
 export default function FeaturedCategories() {
     return (
-        <section className="bg-slate-50 py-14 sm:py-16 lg:py-20">
+        <section className="py-16 sm:py-20">
             <Container>
-                {/* Section Header */}
-                <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-                        Featured Categories
-                    </h2>
-
-                    <p className="mt-4 text-sm leading-7 text-gray-600 sm:text-base">
-                        Explore gear from our most popular categories and find
-                        everything you need for your next adventure.
+                <FadeIn className="mx-auto max-w-2xl text-center">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Catalog</p>
+                    <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Featured categories</h2>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base">
+                        Explore the most requested sports and outdoor collections.
                     </p>
-                </div>
+                </FadeIn>
 
-                {/* Categories Grid */}
-                <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+                <Stagger className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category) => {
                         const Icon = category.icon;
-
                         return (
-                            <div
-                                key={category.title}
-                                className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                            >
-                                <div className="mb-5 inline-flex rounded-xl bg-blue-100 p-3 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
-                                    <Icon size={30} />
-                                </div>
-
-                                <h3 className="text-xl font-semibold text-gray-900">
-                                    {category.title}
-                                </h3>
-
-                                <p className="mt-3 text-sm leading-6 text-gray-600 sm:text-base">
-                                    {category.description}
-                                </p>
-                            </div>
+                            <StaggerItem key={category.title}>
+                                <MotionCard>
+                                    <Link
+                                        href="/gear"
+                                        className="block h-full rounded-2xl border bg-card p-6 shadow-sm"
+                                    >
+                                        <div className="mb-5 inline-flex rounded-xl bg-primary/10 p-3 text-primary">
+                                            <Icon size={28} aria-hidden="true" />
+                                        </div>
+                                        <h3 className="text-xl font-semibold">{category.title}</h3>
+                                        <p className="mt-2 text-sm leading-6 text-muted-foreground">{category.description}</p>
+                                    </Link>
+                                </MotionCard>
+                            </StaggerItem>
                         );
                     })}
-                </div>
+                </Stagger>
             </Container>
         </section>
     );

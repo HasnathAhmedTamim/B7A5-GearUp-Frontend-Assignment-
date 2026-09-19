@@ -3,26 +3,22 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import { Eye, EyeOff } from "lucide-react";
-
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Mountain } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import {
-    registerUser,
-    RegisterPayload,
-} from "@/services/auth/auth.api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { registerUser, RegisterPayload } from "@/services/auth/auth.api";
 import { getErrorMessage } from "@/utils/getErrorMessage";
 
 type RegisterFormData = RegisterPayload;
 
 export default function RegisterForm() {
     const router = useRouter();
-
     const [showPassword, setShowPassword] = useState(false);
-
     const {
         register,
         handleSubmit,
@@ -31,161 +27,74 @@ export default function RegisterForm() {
 
     const { mutate, isPending } = useMutation({
         mutationFn: registerUser,
-
         onSuccess: (res) => {
             toast.success(res.message || "Registration successful. Please login.");
             router.push("/login");
         },
-
         onError: (error) => {
             toast.error(getErrorMessage(error));
         },
     });
 
-    const onSubmit = (data: RegisterFormData) => {
-        mutate(data);
-    };
-
     return (
-        <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-xl sm:p-8">
+        <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-auto w-full max-w-md rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+        >
+            <Link href="/" className="mb-6 inline-flex items-center gap-2 font-semibold">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                    <Mountain className="h-4 w-4" />
+                </span>
+                GearUp
+            </Link>
+            <h1 className="text-3xl font-semibold tracking-tight">Create account</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Join GearUp to rent or list sports gear.</p>
 
-            {/* Heading */}
-
-            <div className="text-center">
-                <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-                    Create Account
-                </h1>
-
-                <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
-                    Join GearUp and start renting sports gear today.
-                </p>
-            </div>
-
-            {/* Form */}
-
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="mt-8 space-y-5"
-            >
-
-                {/* Name */}
-
+            <form onSubmit={handleSubmit((data) => mutate(data))} className="mt-8 space-y-5" noValidate>
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-gray-700">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        placeholder="Enter your name"
-                        {...register("name", {
-                            required: "Name is required",
-                        })}
-                        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    />
-
-                    {errors.name && (
-                        <p className="mt-2 text-sm text-red-500">
-                            {errors.name.message}
-                        </p>
-                    )}
+                    <label htmlFor="reg-name" className="mb-2 block text-sm font-medium">Full name</label>
+                    <Input id="reg-name" className="h-11" placeholder="Your name" {...register("name", { required: "Name is required" })} />
+                    {errors.name && <p className="mt-2 text-sm text-destructive">{errors.name.message}</p>}
                 </div>
-
-                {/* Email */}
-
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-gray-700">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                        {...register("email", {
-                            required: "Email is required",
-                        })}
-                        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                    />
-
-                    {errors.email && (
-                        <p className="mt-2 text-sm text-red-500">
-                            {errors.email.message}
-                        </p>
-                    )}
+                    <label htmlFor="reg-email" className="mb-2 block text-sm font-medium">Email</label>
+                    <Input id="reg-email" type="email" className="h-11" placeholder="you@email.com" {...register("email", { required: "Email is required" })} />
+                    {errors.email && <p className="mt-2 text-sm text-destructive">{errors.email.message}</p>}
                 </div>
-
-                {/* Password */}
-
                 <div>
-                    <label className="mb-2 block text-sm font-semibold text-gray-700">
-                        Password
-                    </label>
-
+                    <label htmlFor="reg-password" className="mb-2 block text-sm font-medium">Password</label>
                     <div className="relative">
-
-                        <input
+                        <Input
+                            id="reg-password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Enter your password"
+                            className="h-11 pr-12"
+                            placeholder="At least 6 characters"
                             {...register("password", {
                                 required: "Password is required",
-                                minLength: {
-                                    value: 6,
-                                    message:
-                                        "Password must be at least 6 characters",
-                                },
+                                minLength: { value: 6, message: "Password must be at least 6 characters" },
                             })}
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
                         />
-
                         <button
                             type="button"
-                            onClick={() =>
-                                setShowPassword(!showPassword)
-                            }
-                            className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 transition hover:text-blue-600"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Hide password" : "Show password"}
                         >
-                            {showPassword ? (
-                                <EyeOff size={20} />
-                            ) : (
-                                <Eye size={20} />
-                            )}
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
-
                     </div>
-
-                    {errors.password && (
-                        <p className="mt-2 text-sm text-red-500">
-                            {errors.password.message}
-                        </p>
-                    )}
+                    {errors.password && <p className="mt-2 text-sm text-destructive">{errors.password.message}</p>}
                 </div>
-
-                {/* Submit */}
-
-                <button
-                    type="submit"
-                    disabled={isPending}
-                    className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                    {isPending
-                        ? "Creating Account..."
-                        : "Create Account"}
-                </button>
-
+                <Button type="submit" disabled={isPending} className="h-11 w-full">
+                    {isPending ? "Creating account..." : "Create account"}
+                </Button>
             </form>
 
-            {/* Footer */}
-
-            <p className="mt-6 text-center text-sm text-gray-600">
+            <p className="mt-6 text-center text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <Link
-                    href="/login"
-                    className="font-semibold text-blue-600 transition hover:underline"
-                >
-                    Login
-                </Link>
+                <Link href="/login" className="font-medium text-primary hover:underline">Login</Link>
             </p>
-
-        </div>
+        </motion.div>
     );
 }

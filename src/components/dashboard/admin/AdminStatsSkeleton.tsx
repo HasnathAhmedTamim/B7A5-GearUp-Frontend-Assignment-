@@ -12,7 +12,7 @@ export default function AdminStatsSkeleton() {
                 {Array.from({ length: 6 }).map((_, index) => (
                     <div
                         key={index}
-                        className="rounded-xl border bg-white p-6 shadow-sm"
+                        className="rounded-xl border bg-card p-6 shadow-sm"
                     >
                         <div className="flex items-center justify-between">
                             <div className="space-y-3">
@@ -26,7 +26,7 @@ export default function AdminStatsSkeleton() {
                 ))}
             </div>
 
-            <div className="rounded-xl border bg-white p-6 shadow-sm">
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
                 <Skeleton className="mb-6 h-6 w-48" />
 
                 <div className="space-y-4">

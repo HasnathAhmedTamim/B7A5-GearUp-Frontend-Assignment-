@@ -144,7 +144,7 @@ export default function ProviderOrders() {
             <div className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-10
                 text-center
                 shadow-sm
@@ -155,7 +155,7 @@ export default function ProviderOrders() {
                 </h2>
 
 
-                <p className="mt-2 text-gray-500">
+                <p className="mt-2 text-muted-foreground">
                     No customer has rented your gear yet.
                 </p>
 
@@ -182,7 +182,7 @@ export default function ProviderOrders() {
                 </h1>
 
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                     Manage your customer rental requests.
                 </p>
 
@@ -201,7 +201,7 @@ export default function ProviderOrders() {
                     overflow-hidden
                     rounded-xl
                     border
-                    bg-white
+                    bg-card
                     shadow-sm
                     xl:block
                 "
@@ -211,7 +211,7 @@ export default function ProviderOrders() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-100">
+                    <thead className="bg-muted">
 
                         <tr>
 
@@ -269,7 +269,7 @@ export default function ProviderOrders() {
                                 key={order.id}
                                 className="
                                     border-t
-                                    hover:bg-gray-50
+                                    hover:bg-muted/40
                                 "
                             >
 
@@ -282,7 +282,7 @@ export default function ProviderOrders() {
                                     </p>
 
 
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-muted-foreground">
                                         {order.customer.email}
                                     </p>
 
@@ -320,7 +320,7 @@ export default function ProviderOrders() {
                                             </p>
 
 
-                                            <p className="text-sm text-gray-500">
+                                            <p className="text-sm text-muted-foreground">
                                                 {order.gear.category.name}
                                             </p>
 
@@ -367,12 +367,12 @@ export default function ProviderOrders() {
 
                                     <span className="
                                         rounded-full
-                                        bg-blue-100
+                                        bg-primary/10
                                         px-3
                                         py-1
                                         text-xs
                                         font-semibold
-                                        text-blue-700
+                                        text-primary
                                     ">
 
                                         {order.status}
@@ -482,7 +482,7 @@ export default function ProviderOrders() {
                         className="
                             rounded-xl
                             border
-                            bg-white
+                            bg-card
                             p-5
                             shadow-sm
                         "
@@ -493,7 +493,7 @@ export default function ProviderOrders() {
                         <div className="border-b pb-4">
 
 
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                                 Customer
                             </p>
 
@@ -503,7 +503,7 @@ export default function ProviderOrders() {
                             </p>
 
 
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                                 {order.customer.email}
                             </p>
 
@@ -543,7 +543,7 @@ export default function ProviderOrders() {
                                 </p>
 
 
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-muted-foreground">
                                     {order.gear.category.name}
                                 </p>
 
@@ -569,7 +569,7 @@ export default function ProviderOrders() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Quantity
                                 </span>
 
@@ -585,7 +585,7 @@ export default function ProviderOrders() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Total
                                 </span>
 
@@ -603,18 +603,18 @@ export default function ProviderOrders() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Status
                                 </span>
 
 
                                 <span className="
                                     rounded-full
-                                    bg-blue-100
+                                    bg-primary/10
                                     px-3
                                     py-1
                                     text-xs
-                                    text-blue-700
+                                    text-primary
                                 ">
                                     {order.status}
                                 </span>
@@ -628,7 +628,7 @@ export default function ProviderOrders() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Payment
                                 </span>
 
@@ -763,12 +763,12 @@ function ActionButton({
                 className="
                     w-full
                     rounded-lg
-                    bg-blue-600
+                    bg-primary
                     px-4
                     py-2
                     text-sm
                     text-white
-                    hover:bg-blue-700
+                    hover:bg-primary/90
                 "
             >
                 Pick Up
@@ -815,7 +815,7 @@ function ActionButton({
 
     return (
 
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-muted-foreground">
             No Action
         </span>
 

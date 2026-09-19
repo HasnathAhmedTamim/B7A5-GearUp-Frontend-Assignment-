@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-import { Eye, EyeOff } from "lucide-react";
-
+import { motion } from "framer-motion";
+import { Eye, EyeOff, Mountain } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { loginUser } from "@/services/auth/auth.api";
 import { useAuthContext } from "@/providers/AuthProvider";
 import { getErrorMessage } from "@/utils/getErrorMessage";
@@ -22,7 +23,6 @@ type LoginFormData = {
 export default function LoginForm() {
   const router = useRouter();
   const { refreshUser } = useAuthContext();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -33,133 +33,76 @@ export default function LoginForm() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: loginUser,
-
     onSuccess: async (res) => {
       toast.success(res.message || "Login successful");
-
       await refreshUser();
-
       router.push("/");
       router.refresh();
     },
-
     onError: (error) => {
       toast.error(getErrorMessage(error));
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    mutate(data);
-  };
-
   return (
-    <div className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-6 shadow-xl sm:p-8">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mx-auto w-full max-w-md rounded-2xl border bg-card p-6 shadow-sm sm:p-8"
+    >
+      <Link href="/" className="mb-6 inline-flex items-center gap-2 font-semibold">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <Mountain className="h-4 w-4" />
+        </span>
+        GearUp
+      </Link>
+      <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
+      <p className="mt-2 text-sm text-muted-foreground">Login to manage rentals, payments, and listings.</p>
 
-      {/* Heading */}
-
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-          Welcome Back
-        </h1>
-
-        <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
-          Login to your GearUp account
-        </p>
-      </div>
-
-      {/* Form */}
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-8 space-y-5"
-      >
-
-        {/* Email */}
-
+      <form onSubmit={handleSubmit((data) => mutate(data))} className="mt-8 space-y-5" noValidate>
         <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            Email Address
-          </label>
-
-          <input
+          <label htmlFor="login-email" className="mb-2 block text-sm font-medium">Email</label>
+          <Input
+            id="login-email"
             type="email"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: "Email is required",
-            })}
-            className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            className="h-11"
+            placeholder="you@email.com"
+            aria-invalid={!!errors.email}
+            {...register("email", { required: "Email is required" })}
           />
-
-          {errors.email && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.email.message}
-            </p>
-          )}
+          {errors.email && <p className="mt-2 text-sm text-destructive">{errors.email.message}</p>}
         </div>
-
-        {/* Password */}
-
         <div>
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            Password
-          </label>
-
+          <label htmlFor="login-password" className="mb-2 block text-sm font-medium">Password</label>
           <div className="relative">
-
-            <input
+            <Input
+              id="login-password"
               type={showPassword ? "text" : "password"}
+              className="h-11 pr-12"
               placeholder="Enter your password"
-              {...register("password", {
-                required: "Password is required",
-              })}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 pr-12 text-sm outline-none transition-all focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+              aria-invalid={!!errors.password}
+              {...register("password", { required: "Password is required" })}
             />
-
             <button
               type="button"
-              onClick={() =>
-                setShowPassword(!showPassword)
-              }
-              className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 transition hover:text-blue-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? (
-                <EyeOff size={20} />
-              ) : (
-                <Eye size={20} />
-              )}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
-
           </div>
-
-          {errors.password && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.password.message}
-            </p>
-          )}
+          {errors.password && <p className="mt-2 text-sm text-destructive">{errors.password.message}</p>}
         </div>
-
-        {/* Submit */}
-
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70"
-        >
+        <Button type="submit" disabled={isPending} className="h-11 w-full">
           {isPending ? "Logging in..." : "Login"}
-        </button>
+        </Button>
       </form>
 
-      {/* Footer */}
-
-      <p className="mt-6 text-center text-sm text-gray-600">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link
-          href="/register"
-          className="font-semibold text-blue-600 transition hover:underline"
-        >
-          Register
-        </Link>
+        <Link href="/register" className="font-medium text-primary hover:underline">Register</Link>
       </p>
-    </div>
+    </motion.div>
   );
 }

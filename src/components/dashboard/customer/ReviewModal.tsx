@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,17 +32,17 @@ export default function ReviewModal({
     gearId,
 }: ReviewModalProps) {
     const queryClient = useQueryClient();
-
-    const [rating, setRating] = useState(0);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     const {
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: { errors },
         reset,
     } = useForm<ReviewFormData>({
-       resolver: zodResolver(reviewSchema) as any,
+        resolver: zodResolver(reviewSchema) as never,
         defaultValues: {
             gearId,
             rating: 0,
@@ -50,35 +50,40 @@ export default function ReviewModal({
         },
     });
 
+    const rating = watch("rating");
+
     useEffect(() => {
         setValue("gearId", gearId);
     }, [gearId, setValue]);
 
+    useEffect(() => {
+        if (!open) return;
+
+        closeButtonRef.current?.focus();
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+
+        document.addEventListener("keydown", onKeyDown);
+        return () => document.removeEventListener("keydown", onKeyDown);
+    }, [open, onClose]);
+
     const { mutate, isPending } = useMutation({
         mutationFn: createReview,
-
         onSuccess: () => {
             toast.success("Review submitted successfully.");
-
-            queryClient.invalidateQueries({
-                queryKey: ["my-rentals"],
-            });
-
-            queryClient.invalidateQueries({
-                queryKey: ["gear-reviews", gearId],
-            });
-
+            queryClient.invalidateQueries({ queryKey: ["my-rentals"] });
+            queryClient.invalidateQueries({ queryKey: ["gear-reviews", gearId] });
             reset({
                 gearId,
                 rating: 0,
                 comment: "",
             });
-
-            setRating(0);
-
             onClose();
         },
-
         onError: (error) => {
             toast.error(getErrorMessage(error));
         },
@@ -96,102 +101,89 @@ export default function ReviewModal({
             onClick={onClose}
         >
             <div
-                className="w-full max-w-lg rounded-xl bg-white shadow-xl"
-                onClick={(e) => e.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="review-dialog-title"
+                className="w-full max-w-lg rounded-2xl border bg-card shadow-lg"
+                onClick={(event) => event.stopPropagation()}
             >
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Header */}
-                    <div className="flex items-center justify-between border-b p-5">
-                        <h2 className="text-xl font-semibold">
-                            Leave a Review
+                    <div className="flex items-center justify-between border-b px-5 py-4">
+                        <h2 id="review-dialog-title" className="text-lg font-semibold text-foreground">
+                            Leave a review
                         </h2>
-
-                        <button
+                        <Button
+                            ref={closeButtonRef}
                             type="button"
+                            variant="ghost"
+                            size="icon"
                             onClick={onClose}
+                            aria-label="Close review dialog"
                         >
-                            <X size={20} />
-                        </button>
+                            <X className="h-5 w-5" />
+                        </Button>
                     </div>
 
-                    {/* Body */}
                     <div className="space-y-6 p-5">
-                        <input
-                            type="hidden"
-                            {...register("gearId")}
-                        />
+                        <input type="hidden" {...register("gearId")} />
 
-                        {/* Rating */}
                         <div>
-                            <label className="mb-3 block text-sm font-medium">
+                            <p id="rating-label" className="mb-3 block text-sm font-medium text-foreground">
                                 Rating
-                            </label>
-
-                            <div className="flex gap-2">
+                            </p>
+                            <div className="flex gap-2" role="group" aria-labelledby="rating-label">
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <button
                                         key={star}
                                         type="button"
+                                        aria-label={`${star} star${star === 1 ? "" : "s"}`}
+                                        aria-pressed={star === rating}
+                                        className="rounded-md p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                                         onClick={() => {
-                                            setRating(star);
-
                                             setValue("rating", star, {
                                                 shouldValidate: true,
                                             });
                                         }}
                                     >
                                         <Star
-                                            size={32}
                                             className={
                                                 star <= rating
-                                                    ? "fill-yellow-400 text-yellow-400"
-                                                    : "text-gray-300"
+                                                    ? "h-8 w-8 fill-amber-400 text-amber-400"
+                                                    : "h-8 w-8 text-muted-foreground/40"
                                             }
+                                            aria-hidden="true"
                                         />
                                     </button>
                                 ))}
                             </div>
-
-                            <p className="mt-2 text-sm text-red-500">
-                                {errors.rating?.message}
-                            </p>
+                            {errors.rating && (
+                                <p className="mt-2 text-sm text-destructive">{errors.rating.message}</p>
+                            )}
                         </div>
 
-                        {/* Comment */}
                         <div>
-                            <label className="mb-2 block text-sm font-medium">
+                            <label htmlFor="review-comment" className="mb-2 block text-sm font-medium text-foreground">
                                 Comment
                             </label>
-
                             <Textarea
+                                id="review-comment"
                                 rows={5}
-                                placeholder="Write your experience..."
+                                placeholder="Share how the gear performed."
+                                aria-invalid={!!errors.comment}
                                 {...register("comment")}
                             />
-
-                            <p className="mt-2 text-sm text-red-500">
-                                {errors.comment?.message}
-                            </p>
+                            {errors.comment && (
+                                <p className="mt-2 text-sm text-destructive">{errors.comment.message}</p>
+                            )}
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="flex justify-end gap-3 border-t p-5">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={onClose}
-                        >
+                    <div className="flex flex-col-reverse gap-3 border-t p-5 sm:flex-row sm:justify-end">
+                        <Button type="button" variant="outline" className="h-11" onClick={onClose}>
                             Cancel
                         </Button>
-
-                        <Button
-                            type="submit"
-                            disabled={isPending}
-                        >
-                            {isPending
-                                ? "Submitting..."
-                                : "Submit Review"}
+                        <Button type="submit" disabled={isPending} aria-busy={isPending} className="h-11">
+                            {isPending ? "Submitting..." : "Submit review"}
                         </Button>
                     </div>
                 </form>

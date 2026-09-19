@@ -147,13 +147,13 @@ export default function AdminCategories() {
 
             {/* Desktop Table */}
 
-            <div className="hidden overflow-hidden rounded-xl border bg-white shadow-sm md:block">
+            <div className="hidden overflow-hidden rounded-xl border bg-card shadow-sm md:block">
 
                 <div className="overflow-x-auto">
 
                     <table className="min-w-full">
 
-                        <thead className="bg-gray-100">
+                        <thead className="bg-muted">
 
                             <tr>
 
@@ -179,14 +179,14 @@ export default function AdminCategories() {
 
                                 <tr
                                     key={category.id}
-                                    className="border-t transition-colors hover:bg-gray-50"
+                                    className="border-t transition-colors hover:bg-muted/40"
                                 >
 
                                     <td className="px-6 py-5 font-medium">
                                         {category.name}
                                     </td>
 
-                                    <td className="max-w-md px-6 py-5 text-gray-600">
+                                    <td className="max-w-md px-6 py-5 text-muted-foreground">
                                         {category.description || "-"}
                                     </td>
 
@@ -276,12 +276,12 @@ export default function AdminCategories() {
 
                     <div
                         key={category.id}
-                        className="rounded-xl border bg-white p-5 shadow-sm"
+                        className="rounded-xl border bg-card p-5 shadow-sm"
                     >
 
                         <div>
 
-                            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                                 Category
                             </p>
 
@@ -293,11 +293,11 @@ export default function AdminCategories() {
 
                         <div className="mt-4">
 
-                            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                                 Description
                             </p>
 
-                            <p className="mt-1 text-sm leading-6 text-gray-600">
+                            <p className="mt-1 text-sm leading-6 text-muted-foreground">
                                 {category.description || "No description"}
                             </p>
 
@@ -377,7 +377,7 @@ export default function AdminCategories() {
 
             {categories.length === 0 && (
 
-                <div className="rounded-xl border border-dashed bg-white py-12 text-center text-gray-500">
+                <div className="rounded-xl border border-dashed bg-card py-12 text-center text-muted-foreground">
 
                     No Categories Found.
 

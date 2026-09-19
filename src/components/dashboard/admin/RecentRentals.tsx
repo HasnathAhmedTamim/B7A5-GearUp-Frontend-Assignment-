@@ -30,9 +30,9 @@ export default function RecentRentals() {
     if (isLoading) {
 
         return (
-            <div className="rounded-xl border bg-white p-6 shadow-sm">
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
 
-                <p className="text-center text-gray-500">
+                <p className="text-center text-muted-foreground">
                     Loading recent rentals...
                 </p>
 
@@ -74,13 +74,13 @@ export default function RecentRentals() {
                 return "bg-green-100 text-green-700";
 
             case "RETURNED":
-                return "bg-blue-100 text-blue-700";
+                return "bg-primary/10 text-primary";
 
             case "CANCELLED":
                 return "bg-red-100 text-red-700";
 
             default:
-                return "bg-gray-100 text-gray-700";
+                return "bg-muted text-foreground/80";
         }
 
     };
@@ -112,7 +112,7 @@ export default function RecentRentals() {
         <div className="
             rounded-xl
             border
-            bg-white
+            bg-card
             shadow-sm
         ">
 
@@ -124,7 +124,7 @@ export default function RecentRentals() {
                 </h2>
 
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                     Latest rental orders across the platform.
                 </p>
 
@@ -145,9 +145,9 @@ export default function RecentRentals() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-50">
+                    <thead className="bg-muted/40">
 
-                        <tr className="text-left text-sm text-gray-600">
+                        <tr className="text-left text-sm text-muted-foreground">
 
                             <th className="px-6 py-4">
                                 Customer
@@ -185,16 +185,16 @@ export default function RecentRentals() {
 
                             <tr
                                 key={rental.id}
-                                className="border-t hover:bg-gray-50"
+                                className="border-t hover:bg-muted/40"
                             >
 
                                 <td className="px-6 py-4">
 
                                     <div className="flex items-center gap-3">
 
-                                        <div className="rounded-full bg-blue-100 p-2">
+                                        <div className="rounded-full bg-primary/10 p-2">
 
-                                            <User className="h-4 w-4 text-blue-600" />
+                                            <User className="h-4 w-4 text-primary" />
 
                                         </div>
 
@@ -205,7 +205,7 @@ export default function RecentRentals() {
                                                 {rental.customer.name}
                                             </p>
 
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-xs text-muted-foreground">
                                                 {rental.customer.email}
                                             </p>
 
@@ -221,7 +221,7 @@ export default function RecentRentals() {
 
                                     <div className="flex items-center gap-2">
 
-                                        <Package className="h-4 w-4 text-gray-500" />
+                                        <Package className="h-4 w-4 text-muted-foreground" />
 
                                         {rental.gear.title}
 
@@ -348,9 +348,9 @@ export default function RecentRentals() {
 
                         <div className="flex items-center gap-3">
 
-                            <div className="rounded-full bg-blue-100 p-2">
+                            <div className="rounded-full bg-primary/10 p-2">
 
-                                <User className="h-4 w-4 text-blue-600" />
+                                <User className="h-4 w-4 text-primary" />
 
                             </div>
 
@@ -361,7 +361,7 @@ export default function RecentRentals() {
                                     {rental.customer.name}
                                 </p>
 
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-muted-foreground">
                                     {rental.customer.email}
                                 </p>
 
@@ -376,7 +376,7 @@ export default function RecentRentals() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Gear
                                 </span>
 
@@ -390,7 +390,7 @@ export default function RecentRentals() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Amount
                                 </span>
 
@@ -406,7 +406,7 @@ export default function RecentRentals() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Rental
                                 </span>
 
@@ -430,7 +430,7 @@ export default function RecentRentals() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Payment
                                 </span>
 
@@ -463,7 +463,7 @@ export default function RecentRentals() {
 
                 {!data?.length && (
 
-                    <p className="py-10 text-center text-gray-500">
+                    <p className="py-10 text-center text-muted-foreground">
                         No recent rentals found.
                     </p>
 

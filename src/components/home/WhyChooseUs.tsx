@@ -1,76 +1,59 @@
+"use client";
+
+import { ShieldCheck, Truck, Wallet, Clock3 } from "lucide-react";
+
 import Container from "../layout/Container";
-import {
-    ShieldCheck,
-    Truck,
-    Wallet,
-    Clock3,
-} from "lucide-react";
+import { FadeIn, Stagger, StaggerItem } from "@/components/shared/Motion";
 
 const features = [
     {
         icon: ShieldCheck,
-        title: "Verified Providers",
-        description:
-            "Rent equipment from trusted and verified providers with confidence.",
+        title: "Verified providers",
+        description: "Rent from trusted listings with clear availability and stock.",
     },
     {
         icon: Truck,
-        title: "Easy Pickup & Delivery",
-        description:
-            "Choose convenient pickup locations or delivery options where available.",
+        title: "Simple pickup",
+        description: "Coordinate pickup after payment is confirmed.",
     },
     {
         icon: Wallet,
-        title: "Affordable Pricing",
-        description:
-            "Pay only for the days you need. Save money compared to buying new gear.",
+        title: "Pay for the days you need",
+        description: "Transparent daily rates before you request a rental.",
     },
     {
         icon: Clock3,
-        title: "Quick Booking",
-        description:
-            "Book your favorite gear in just a few clicks without any hassle.",
+        title: "Quick booking",
+        description: "Choose dates, submit a request, then checkout when confirmed.",
     },
 ];
 
 export default function WhyChooseUs() {
     return (
-        <section className="bg-slate-50 py-20">
+        <section className="bg-muted/50 py-16 sm:py-20">
             <Container>
-                <div className="text-center">
-                    <h2 className="text-4xl font-bold">
-                        Why Choose GearUp?
-                    </h2>
+                <FadeIn className="text-center">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">Why GearUp</p>
+                    <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Built for a clean rental flow</h2>
+                    <p className="mt-3 text-muted-foreground">Browse, request, pay, and return — without extra steps.</p>
+                </FadeIn>
 
-                    <p className="mt-4 text-gray-600">
-                        Everything you need for a smooth and reliable rental experience.
-                    </p>
-                </div>
-
-                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {features.map((feature) => {
                         const Icon = feature.icon;
-
                         return (
-                            <div
-                                key={feature.title}
-                                className="rounded-2xl bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                            >
-                                <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-                                    <Icon size={28} />
+                            <StaggerItem key={feature.title}>
+                                <div className="h-full rounded-2xl border bg-card p-6 text-center shadow-sm">
+                                    <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                        <Icon size={24} aria-hidden="true" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold">{feature.title}</h3>
+                                    <p className="mt-2 text-sm leading-6 text-muted-foreground">{feature.description}</p>
                                 </div>
-
-                                <h3 className="text-xl font-semibold">
-                                    {feature.title}
-                                </h3>
-
-                                <p className="mt-3 text-gray-600">
-                                    {feature.description}
-                                </p>
-                            </div>
+                            </StaggerItem>
                         );
                     })}
-                </div>
+                </Stagger>
             </Container>
         </section>
     );

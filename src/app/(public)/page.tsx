@@ -1,7 +1,5 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
-
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import FeaturedCategories from "@/components/home/FeaturedCategories";
@@ -12,28 +10,18 @@ import Testimonials from "@/components/home/Testimonials";
 import CallToAction from "@/components/home/CallToAction";
 
 export default function HomePage() {
-  const { user, loading, isAuthenticated } = useAuth();
-
-  console.log({
-    user,
-    loading,
-    isAuthenticated,
-  });
-
-  return (
-    <>
-      <Navbar />
-
-      <main>
-        <Hero />
-        <FeaturedCategories />
-        <FeaturedGear />
-        <WhyChooseUs />
-        <Testimonials />
-        <CallToAction />
-      </main>
-
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+            <main>
+                <Hero />
+                <FeaturedCategories />
+                <FeaturedGear />
+                <WhyChooseUs />
+                <Testimonials />
+                <CallToAction />
+            </main>
+            <Footer />
+        </>
+    );
 }

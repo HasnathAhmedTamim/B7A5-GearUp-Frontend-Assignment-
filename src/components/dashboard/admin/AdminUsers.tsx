@@ -146,7 +146,7 @@ export default function AdminUsers() {
                     Users
                 </h1>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                     Manage platform users.
                 </p>
 
@@ -162,7 +162,7 @@ export default function AdminUsers() {
         overflow-hidden
         rounded-xl
         border
-        bg-white
+        bg-card
         shadow-sm
         lg:block
     "
@@ -171,7 +171,7 @@ export default function AdminUsers() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-100">
+                    <thead className="bg-muted">
 
                         <tr>
 
@@ -206,7 +206,7 @@ export default function AdminUsers() {
 
                             <tr
                                 key={user.id}
-                                className="border-t hover:bg-gray-50"
+                                className="border-t hover:bg-muted/40"
                             >
 
                                 <td className="p-4 font-medium">
@@ -258,7 +258,7 @@ export default function AdminUsers() {
 
                                             ?
 
-                                            <span className="text-gray-400">
+                                            <span className="text-muted-foreground">
                                                 Protected
                                             </span>
 
@@ -320,7 +320,7 @@ export default function AdminUsers() {
                         className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-5
                 shadow-sm
             "
@@ -330,7 +330,7 @@ export default function AdminUsers() {
 
                         <div className="flex justify-between border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Name
                             </span>
 
@@ -346,7 +346,7 @@ export default function AdminUsers() {
 
                         <div className="mt-3 flex justify-between border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Email
                             </span>
 
@@ -362,7 +362,7 @@ export default function AdminUsers() {
 
                         <div className="mt-3 flex justify-between border-b pb-3">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Role
                             </span>
 
@@ -378,7 +378,7 @@ export default function AdminUsers() {
 
                         <div className="mt-3 flex items-center justify-between">
 
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Status
                             </span>
 
@@ -420,11 +420,11 @@ export default function AdminUsers() {
                                     <div
                                         className="
                             rounded-lg
-                            bg-gray-100
+                            bg-muted
                             py-2
                             text-center
                             text-sm
-                            text-gray-500
+                            text-muted-foreground
                         "
                                     >
                                         Protected User
@@ -484,10 +484,10 @@ export default function AdminUsers() {
                         className="
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-8
                 text-center
-                text-gray-500
+                text-muted-foreground
             "
                     >
                         No users found.

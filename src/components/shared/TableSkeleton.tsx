@@ -10,10 +10,10 @@ export default function TableSkeleton({
     columns = 5,
 }: TableSkeletonProps) {
     return (
-        <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
 
             {/* Header */}
-            <div className="grid grid-cols-5 gap-4 border-b bg-gray-50 p-4">
+            <div className="grid grid-cols-5 gap-4 border-b bg-muted/40 p-4">
                 {Array.from({ length: columns }).map((_, index) => (
                     <Skeleton
                         key={index}

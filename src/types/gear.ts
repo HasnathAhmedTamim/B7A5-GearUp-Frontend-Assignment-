@@ -17,6 +17,17 @@ export interface IGear {
 
   category: ICategory;
 
+  provider?: {
+    id: string;
+    name: string;
+    email?: string;
+  };
+
+  reviews?: Array<{
+    id?: string;
+    rating: number;
+  }>;
+
   createdAt: string;
   updatedAt: string;
 }

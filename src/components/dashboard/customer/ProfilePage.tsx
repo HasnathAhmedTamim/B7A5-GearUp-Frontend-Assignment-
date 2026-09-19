@@ -146,7 +146,7 @@ export default function ProfilePage() {
                 h-80
                 items-center
                 justify-center
-                text-gray-500
+                text-muted-foreground
             ">
 
                 Loading profile...
@@ -192,7 +192,7 @@ export default function ProfilePage() {
     const avatar =
         !user.profile?.photo ||
             user.profile.photo.includes("/example/")
-            ? `https://ui-avatars.com/api/?background=2563eb&color=fff&size=200&name=${encodeURIComponent(
+            ? `https://ui-avatars.com/api/?background=1f4d3a&color=fff&size=200&name=${encodeURIComponent(
                 user.name
             )}`
             : user.profile.photo;
@@ -248,7 +248,7 @@ export default function ProfilePage() {
                     <p className="
                         mt-1
                         text-sm
-                        text-gray-500
+                        text-muted-foreground
                     ">
 
                         Manage your personal information.
@@ -281,7 +281,7 @@ export default function ProfilePage() {
                         text-sm
                         font-medium
                         transition
-                        hover:bg-gray-50
+                        hover:bg-muted/40
 
                         sm:w-auto
                     "
@@ -312,7 +312,7 @@ export default function ProfilePage() {
             <div className="
                 rounded-2xl
                 border
-                bg-white
+                bg-card
                 p-4
                 shadow-sm
 
@@ -395,7 +395,7 @@ export default function ProfilePage() {
                         <p className="
                             mt-1
                             text-sm
-                            text-gray-500
+                            text-muted-foreground
                         ">
 
                             {user.email}
@@ -421,12 +421,12 @@ export default function ProfilePage() {
 
                             <span className="
                                 rounded-full
-                                bg-blue-100
+                                bg-primary/10
                                 px-4
                                 py-1
                                 text-sm
                                 font-semibold
-                                text-blue-700
+                                text-primary
                             ">
 
                                 {user.role}
@@ -630,7 +630,7 @@ export default function ProfilePage() {
                             <p className="
                                 mb-2
                                 text-sm
-                                text-gray-500
+                                text-muted-foreground
                             ">
 
                                 Bio
@@ -638,7 +638,7 @@ export default function ProfilePage() {
                             </p>
 
 
-                            <p className="text-gray-700">
+                            <p className="text-foreground/80">
 
                                 {
                                     user.profile?.bio ||
@@ -753,7 +753,7 @@ function InfoCard({
                 items-center
                 gap-2
                 text-sm
-                text-gray-500
+                text-muted-foreground
             ">
 
                 {icon}

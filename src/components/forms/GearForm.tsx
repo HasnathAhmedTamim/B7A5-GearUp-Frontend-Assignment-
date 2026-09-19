@@ -153,7 +153,7 @@ export default function GearForm({
                 space-y-6
                 rounded-xl
                 border
-                bg-white
+                bg-card
                 p-4
                 shadow-sm
 
@@ -201,7 +201,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     />
@@ -242,7 +242,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     />
@@ -285,7 +285,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     />
@@ -326,7 +326,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     >
@@ -409,7 +409,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     />
@@ -456,7 +456,7 @@ export default function GearForm({
                             border
                             p-3
                             outline-none
-                            focus:border-blue-600
+                            focus:border-primary
                         "
 
                     />
@@ -507,7 +507,7 @@ export default function GearForm({
                         border
                         p-3
                         outline-none
-                        focus:border-blue-600
+                        focus:border-primary
                     "
 
                 />

@@ -3,204 +3,59 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import {
-    createCheckoutSession,
-} from "@/services/payment/payment.api";
+import { Button } from "@/components/ui/button";
+import { createCheckoutSession } from "@/services/payment/payment.api";
+import { getErrorMessage } from "@/utils/getErrorMessage";
 
-import {
-    getErrorMessage,
-} from "@/utils/getErrorMessage";
+type PaymentButtonProps = {
+    rental: {
+        id: string;
+        payment: { id: string } | null;
+        status: string;
+    };
+};
 
-
-
-interface PaymentButtonProps {
-
-    rental: any;
-
-}
-
-
-
-
-
-export default function PaymentButton({
-
-    rental,
-
-}: PaymentButtonProps) {
-
-
-
-
-
-    const {
-        mutate,
-        isPending,
-
-    } = useMutation({
-
-
-
-        mutationFn: () =>
-            createCheckoutSession(
-                rental.id
-            ),
-
-
-
-
+export default function PaymentButton({ rental }: PaymentButtonProps) {
+    const { mutate, isPending } = useMutation({
+        mutationFn: () => createCheckoutSession(rental.id),
         onSuccess: (data) => {
-
-
-            window.location.href =
-                data.checkoutUrl;
-
-
+            toast.success("Opening secure checkout...");
+            window.location.href = data.checkoutUrl;
         },
-
-
-
-
         onError: (error) => {
-
-
-            toast.error(
-                getErrorMessage(error)
-            );
-
-
-        }
-
-
-
+            toast.error(getErrorMessage(error));
+        },
     });
 
-
-
-
-
-
-
-
     if (rental.payment) {
-
-
         return (
-
-            <span
-                className="
-                    inline-flex
-                    rounded-full
-                    bg-green-100
-                    px-3
-                    py-1
-                    text-xs
-                    font-semibold
-                    text-green-700
-                "
-            >
-
+            <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
                 Paid
-
             </span>
-
         );
-
     }
-
-
-
-
-
-
-
-
 
     if (rental.status === "CONFIRMED") {
-
-
         return (
-
-            <button
-
+            <Button
+                type="button"
+                onClick={() => mutate()}
                 disabled={isPending}
-
-
-                onClick={() =>
-                    mutate()
-                }
-
-
-                className="
-                    w-full
-                    rounded-lg
-                    bg-green-600
-                    px-4
-                    py-2
-                    text-sm
-                    font-medium
-                    text-white
-                    transition
-                    hover:bg-green-700
-
-                    disabled:cursor-not-allowed
-                    disabled:opacity-60
-
-                    sm:w-auto
-                "
-
+                aria-busy={isPending}
+                className="h-11 w-full sm:w-auto"
             >
-
-
-                {
-                    isPending
-
-                        ?
-
-                        "Redirecting..."
-
-                        :
-
-                        "Pay Now"
-                }
-
-
-            </button>
-
-
+                {isPending ? "Redirecting to checkout..." : "Pay now"}
+            </Button>
         );
-
     }
 
+    if (rental.status === "PLACED") {
+        return (
+            <span className="text-sm text-muted-foreground">
+                Payment opens after confirmation
+            </span>
+        );
+    }
 
-
-
-
-
-
-
-
-    return (
-
-        <span
-
-            className="
-                inline-flex
-                rounded-full
-                bg-yellow-100
-                px-3
-                py-1
-                text-xs
-                font-semibold
-                text-yellow-700
-            "
-
-        >
-
-            Waiting
-
-        </span>
-
-    );
-
+    return null;
 }

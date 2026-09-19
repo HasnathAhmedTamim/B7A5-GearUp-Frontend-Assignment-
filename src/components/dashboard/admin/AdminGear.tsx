@@ -47,7 +47,7 @@ export default function AdminGear() {
                     Gear Management
                 </h1>
 
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                     Manage all rental gears.
                 </p>
 
@@ -65,7 +65,7 @@ export default function AdminGear() {
                     overflow-hidden
                     rounded-xl
                     border
-                    bg-white
+                    bg-card
                     shadow-sm
                     xl:block
                 "
@@ -75,7 +75,7 @@ export default function AdminGear() {
                 <table className="w-full">
 
 
-                    <thead className="bg-gray-100">
+                    <thead className="bg-muted">
 
                         <tr>
 
@@ -125,7 +125,7 @@ export default function AdminGear() {
                                 key={item.id}
                                 className="
                                     border-t
-                                    hover:bg-gray-50
+                                    hover:bg-muted/40
                                 "
                             >
 
@@ -234,7 +234,7 @@ export default function AdminGear() {
                         className="
                             rounded-xl
                             border
-                            bg-white
+                            bg-card
                             p-4
                             shadow-sm
                         "
@@ -274,7 +274,7 @@ export default function AdminGear() {
                                 </h3>
 
 
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-muted-foreground">
 
                                     {item.category?.name ?? "N/A"}
 
@@ -294,7 +294,7 @@ export default function AdminGear() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Provider
                                 </span>
 
@@ -308,7 +308,7 @@ export default function AdminGear() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Price / Day
                                 </span>
 
@@ -322,7 +322,7 @@ export default function AdminGear() {
 
                             <div className="flex justify-between">
 
-                                <span className="text-gray-500">
+                                <span className="text-muted-foreground">
                                     Stock
                                 </span>
 
@@ -350,10 +350,10 @@ export default function AdminGear() {
                         className="
                             rounded-xl
                             border
-                            bg-white
+                            bg-card
                             p-8
                             text-center
-                            text-gray-500
+                            text-muted-foreground
                         "
                     >
                         No gear found.

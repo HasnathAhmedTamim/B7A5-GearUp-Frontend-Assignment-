@@ -152,10 +152,10 @@ export default function EditGearForm() {
                 className="
                     rounded-xl
                     border
-                    bg-white
+                    bg-card
                     p-6
                     text-center
-                    text-gray-500
+                    text-muted-foreground
                 "
             >
 
@@ -182,7 +182,7 @@ export default function EditGearForm() {
                 className="
                     rounded-xl
                     border
-                    bg-white
+                    bg-card
                     p-6
                     text-center
                     text-red-500

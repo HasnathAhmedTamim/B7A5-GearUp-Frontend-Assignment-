@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import ReviewModal from "./ReviewModal";
 
 interface ReviewButtonProps {
@@ -12,37 +13,31 @@ interface ReviewButtonProps {
     };
 }
 
-export default function ReviewButton({
-    rental,
-}: ReviewButtonProps) {
+export default function ReviewButton({ rental }: ReviewButtonProps) {
     const [open, setOpen] = useState(false);
 
-    // Only returned rentals can be reviewed
     if (rental.status !== "RETURNED") {
-        return (
-            <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">
-                Not Available
-            </span>
-        );
+        return null;
     }
 
-    // Already reviewed
     if (rental.reviewed) {
         return (
-            <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                Reviewed ✓
+            <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+                Reviewed
             </span>
         );
     }
 
     return (
         <>
-            <button
+            <Button
+                type="button"
+                variant="outline"
                 onClick={() => setOpen(true)}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="h-11 w-full sm:w-auto"
             >
-                Leave Review
-            </button>
+                Leave a review
+            </Button>
 
             <ReviewModal
                 open={open}

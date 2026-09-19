@@ -11,7 +11,7 @@ export default function EditGearPage() {
           Edit Gear
         </h1>
 
-        <p className="text-gray-500">
+        <p className="text-muted-foreground">
           Update your gear information.
         </p>
       </div>

@@ -1,27 +1,28 @@
 import Link from "next/link";
 import { XCircle } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+
 export default function PaymentCancelPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-            <div className="w-full max-w-md rounded-xl bg-white p-8 text-center shadow-lg">
-                <XCircle className="mx-auto h-20 w-20 text-red-600" />
-
-                <h1 className="mt-6 text-3xl font-bold">
-                    Payment Cancelled
+        <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10">
+            <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center sm:p-8">
+                <XCircle className="mx-auto h-14 w-14 text-destructive" aria-hidden="true" />
+                <h1 className="mt-5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    Payment cancelled
                 </h1>
-
-                <p className="mt-3 text-gray-600">
-                    Your payment was cancelled.
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    No charge was made. You can return to My Rentals and try checkout again when you are ready.
                 </p>
-
-                <Link
-                    href="/dashboard/customer/rentals"
-                    className="mt-8 inline-block rounded-lg bg-red-600 px-6 py-3 text-white transition hover:bg-red-700"
-                >
-                    Back to Rentals
-                </Link>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                    <Button asChild className="h-11">
+                        <Link href="/dashboard/customer/rentals">Back to rentals</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="h-11">
+                        <Link href="/gear">Browse gear</Link>
+                    </Button>
+                </div>
             </div>
-        </div>
+        </main>
     );
 }

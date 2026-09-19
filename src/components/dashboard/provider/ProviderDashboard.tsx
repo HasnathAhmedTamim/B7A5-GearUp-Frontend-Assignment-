@@ -1,106 +1,68 @@
 "use client";
 
-import { getProviderDashboard } from "@/services/dashboard/dashboard.api";
 import { useQuery } from "@tanstack/react-query";
-import {
-    Package,
-    Clock,
-    ShoppingBag,
-    Wallet,
-} from "lucide-react";
+import { Package, Clock, ShoppingBag, Wallet } from "lucide-react";
 
-
+import { QueryErrorState } from "@/components/shared/QueryState";
+import { FadeIn, Stagger, StaggerItem } from "@/components/shared/Motion";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getProviderDashboard } from "@/services/dashboard/dashboard.api";
 
 export default function ProviderDashboard() {
-
-    const {
-        data,
-        isLoading,
-    } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery({
         queryKey: ["provider-dashboard"],
         queryFn: getProviderDashboard,
     });
 
-
     if (isLoading) {
         return (
-            <div className="flex h-80 items-center justify-center">
-                Loading dashboard...
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                    <Skeleton key={index} className="h-36 rounded-2xl" />
+                ))}
             </div>
         );
     }
 
+    if (isError) {
+        return (
+            <QueryErrorState
+                title="Failed to load provider dashboard"
+                onRetry={() => refetch()}
+            />
+        );
+    }
 
     const cards = [
-        {
-            title: "Total Gear",
-            value: data?.totalGear ?? 0,
-            icon: <Package size={24} />,
-        },
-
-        {
-            title: "Pending Orders",
-            value: data?.pendingOrders ?? 0,
-            icon: <Clock size={24} />,
-        },
-
-        {
-            title: "Active Rentals",
-            value: data?.activeRentals ?? 0,
-            icon: <ShoppingBag size={24} />,
-        },
-
-        {
-            title: "Total Earnings",
-            value: `৳ ${data?.totalEarnings ?? 0}`,
-            icon: <Wallet size={24} />,
-        },
+        { title: "Total gear", value: data?.totalGear ?? 0, icon: Package },
+        { title: "Pending orders", value: data?.pendingOrders ?? 0, icon: Clock },
+        { title: "Active rentals", value: data?.activeRentals ?? 0, icon: ShoppingBag },
+        { title: "Total earnings", value: `৳ ${data?.totalEarnings ?? 0}`, icon: Wallet },
     ];
-
 
     return (
         <div className="space-y-8">
+            <FadeIn>
+                <h1 className="text-3xl font-semibold tracking-tight">Provider dashboard</h1>
+                <p className="mt-2 text-muted-foreground">Track inventory, orders, and earnings.</p>
+            </FadeIn>
 
-            <div>
-                <h1 className="text-3xl font-bold">
-                    Provider Dashboard
-                </h1>
-
-                <p className="mt-2 text-gray-500">
-                    Manage your gears and rental activities.
-                </p>
-            </div>
-
-
-            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
-                {cards.map((card) => (
-
-                    <div
-                        key={card.title}
-                        className="rounded-xl border bg-white p-6 shadow-sm"
-                    >
-
-                        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
-                            {card.icon}
-                        </div>
-
-
-                        <p className="text-sm text-gray-500">
-                            {card.title}
-                        </p>
-
-
-                        <h2 className="mt-2 text-3xl font-bold">
-                            {card.value}
-                        </h2>
-
-                    </div>
-
-                ))}
-
-            </div>
-
+            <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {cards.map((card) => {
+                    const Icon = card.icon;
+                    return (
+                        <StaggerItem key={card.title}>
+                            <div className="rounded-2xl border bg-card p-6 shadow-sm">
+                                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                    <Icon size={22} />
+                                </div>
+                                <p className="text-sm text-muted-foreground">{card.title}</p>
+                                <p className="mt-2 text-3xl font-semibold">{card.value}</p>
+                            </div>
+                        </StaggerItem>
+                    );
+                })}
+            </Stagger>
         </div>
     );
 }

@@ -68,7 +68,7 @@ export default function CategoryModal({
             onClick={onClose}
         >
             <div
-                className="w-full max-w-lg rounded-xl bg-white shadow-xl"
+                className="w-full max-w-lg rounded-xl bg-card shadow-xl"
                 onClick={(e) => e.stopPropagation()}
             >
                 <form onSubmit={handleSubmit}>
@@ -82,7 +82,7 @@ export default function CategoryModal({
                             type="button"
                             onClick={onClose}
                             aria-label="Close modal"
-                            className="rounded p-1 hover:bg-gray-100"
+                            className="rounded p-1 hover:bg-muted"
                         >
                             <X className="h-5 w-5" />
                         </button>

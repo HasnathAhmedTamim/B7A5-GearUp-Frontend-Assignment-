@@ -11,7 +11,7 @@ export default function MyGearPage() {
                     My Gear
                 </h1>
 
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                     Manage all your listed gear.
                 </p>
             </div>

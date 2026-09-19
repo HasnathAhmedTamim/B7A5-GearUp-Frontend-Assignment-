@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { IGear } from "@/types/gear";
 
 interface GearCardProps {
@@ -8,71 +13,63 @@ interface GearCardProps {
 }
 
 export default function GearCard({ gear }: GearCardProps) {
+    const reduce = useReducedMotion();
+    const available = Boolean(gear.availability && gear.stock > 0);
+    const reviewCount = gear.reviews?.length ?? 0;
+    const averageRating =
+        reviewCount > 0
+            ? (gear.reviews!.reduce((sum, review) => sum + review.rating, 0) / reviewCount).toFixed(1)
+            : null;
+
     return (
-        <div className="group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-
-            {/* Image */}
-
-            <div className="relative h-56 overflow-hidden">
+        <motion.article
+            className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+            whileHover={reduce ? undefined : { y: -4 }}
+            transition={{ duration: 0.25 }}
+        >
+            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 <Image
                     src={gear.image || "/placeholder-gear.jpg"}
-                    alt={gear.title}
+                    alt={`${gear.title} rental photo`}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw,
-                           (max-width: 1024px) 50vw,
-                           33vw"
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-            </div>
-
-            {/* Content */}
-
-            <div className="space-y-4 p-5">
-
-                <span className="inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                    {gear.category.name}
-                </span>
-
-                <h3 className="line-clamp-2 min-h-[56px] text-lg font-bold text-gray-900 sm:text-xl">
-                    {gear.title}
-                </h3>
-
-                <p className="text-sm text-gray-500 sm:text-base">
-                    {gear.brand}
-                </p>
-
-                <div className="flex items-center justify-between">
-
-                    <span className="text-lg font-bold text-blue-600">
-                        ${gear.pricePerDay}
-                        <span className="text-sm font-normal text-gray-500">
-                            {" "}
-                            /day
-                        </span>
-                    </span>
-
-                    <span
-                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${gear.availability
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
-                            }`}
-                    >
-                        {gear.availability
-                            ? "Available"
-                            : "Unavailable"}
-                    </span>
-
+                <div className="absolute left-3 top-3">
+                    <Badge variant="secondary" className="bg-background/90 text-foreground">
+                        {gear.category.name}
+                    </Badge>
                 </div>
-
-                <Link
-                    href={`/gear/${gear.id}`}
-                    className="block rounded-lg bg-blue-600 py-2.5 text-center font-medium text-white transition hover:bg-blue-700"
-                >
-                    View Details
-                </Link>
-
+                <div className="absolute bottom-3 right-3">
+                    <Badge variant={available ? "secondary" : "destructive"} className={available ? "bg-primary text-primary-foreground" : undefined}>
+                        {available ? "Available to rent" : "Unavailable"}
+                    </Badge>
+                </div>
             </div>
 
-        </div>
+            <div className="flex flex-1 flex-col p-4 sm:p-5">
+                <div className="mb-2 flex items-center justify-between gap-3 text-sm text-muted-foreground">
+                    <p className="truncate font-medium">{gear.brand}</p>
+                    <p>{gear.stock} in stock</p>
+                </div>
+                <h3 className="text-lg font-semibold leading-snug tracking-tight">{gear.title}</h3>
+                <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{gear.description}</p>
+                {averageRating && (
+                    <p className="mt-3 text-sm text-muted-foreground">
+                        Rated {averageRating} from {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
+                    </p>
+                )}
+                <div className="mt-auto pt-4">
+                    <p className="text-xs uppercase tracking-[0.08em] text-muted-foreground">Daily rate</p>
+                    <p className="mt-1 text-2xl font-semibold">
+                        ৳ {gear.pricePerDay}
+                        <span className="ml-1 text-sm font-medium text-muted-foreground">/ day</span>
+                    </p>
+                    <Button asChild size="lg" className="mt-4 h-11 w-full">
+                        <Link href={`/gear/${gear.id}`}>View details</Link>
+                    </Button>
+                </div>
+            </div>
+        </motion.article>
     );
 }

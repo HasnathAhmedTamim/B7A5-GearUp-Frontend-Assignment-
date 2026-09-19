@@ -1,32 +1,16 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 export default function GearCardSkeleton() {
     return (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-            {/* Image */}
-            <div className="h-56 w-full animate-pulse bg-gray-200" />
-
-            <div className="space-y-4 p-5">
-                {/* Category */}
-                <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
-
-                {/* Title */}
-                <div className="h-6 w-3/4 animate-pulse rounded bg-gray-200" />
-
-                {/* Description */}
-                <div className="space-y-2">
-                    <div className="h-4 w-full animate-pulse rounded bg-gray-200" />
-                    <div className="h-4 w-5/6 animate-pulse rounded bg-gray-200" />
-                </div>
-
-                {/* Price & Availability */}
-                <div className="flex items-center justify-between pt-2">
-                    <div className="h-5 w-20 animate-pulse rounded bg-gray-200" />
-                    <div className="h-5 w-24 animate-pulse rounded bg-gray-200" />
-                </div>
-
-                {/* Button */}
-                <div className="pt-2">
-                    <div className="h-11 w-full animate-pulse rounded-lg bg-gray-300" />
-                </div>
+        <div className="overflow-hidden rounded-2xl border bg-card" aria-hidden="true">
+            <Skeleton className="aspect-[4/3] w-full rounded-none" />
+            <div className="space-y-3 p-5">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-6 w-3/4" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-8 w-32" />
+                <Skeleton className="h-11 w-full" />
             </div>
         </div>
     );
